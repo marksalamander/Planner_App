@@ -26,6 +26,8 @@ fun NewTaskView(
     onAddTask: (Task) -> Unit
 ) {
 
+    //TODO: Implementation for the NewTaskView
+
 //    Column(
 //        horizontalAlignment = Alignment.CenterHorizontally,
 //        modifier = Modifier.fillMaxWidth()

@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import edu.towson.cosc435.alexander.planner.data.model.Task
 
 class NewTaskViewModel : ViewModel() {
 
@@ -40,4 +41,25 @@ class NewTaskViewModel : ViewModel() {
     }
 
 
+    /**
+     * this function validates the input fields
+     * @return a Task object (view model)
+     */
+    fun validateTask(): Task {
+
+        if (title.value.isEmpty()) {
+            throw Exception("The task needs a title")
+        }
+        if (description.value.isEmpty()) {
+            throw Exception("The task needs a description")
+        }
+        if (taskDate.value.isEmpty()) {
+            throw Exception("The task needs a date")
+        }
+        if (taskTime.value.isEmpty()) {
+            throw Exception("The task needs you to set a time")
+        }
+
+        return Task("", title.value, description.value, taskDate.value, taskTime.value, isAlarmSet.value)
+    }
 }
