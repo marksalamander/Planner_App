@@ -1,8 +1,12 @@
 package edu.towson.cosc435.alexander.planner.ui
 
+import edu.towson.cosc435.alexander.planner.data.*
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +28,37 @@ fun TaskWizard() {
     val newTaskDate = remember { mutableStateOf("") }
     val newTaskTime = remember { mutableStateOf( "") }
 
-    Text(text = "Task Wizard")
-    Row(
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = "Task Wizard",
+            fontSize = 20.sp,
+            modifier = Modifier.padding(20.dp)
+        )
+        Text(
+            text = "Task Title",
+            fontSize = 15.sp,
+            modifier = Modifier.padding(5.dp),
+        )
+        OutlinedTextField(
+
+            label = { Text("") },
+            value = newTaskTitle.value,
+            onValueChange = { newValue: String ->
+                newTaskTitle.value = newValue
+            },
+            placeholder = {
+                Text("")
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions
+                .Default
+                .copy(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+            modifier = Modifier
+                .padding(15.dp)
+                .fillMaxWidth()
+        )
         Text(
             text = "Task Description",
             fontSize = 15.sp,
@@ -47,8 +78,69 @@ fun TaskWizard() {
             keyboardOptions = KeyboardOptions
                 .Default
                 .copy(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
-            modifier = Modifier.padding(15.dp)
+            modifier = Modifier
+                .padding(15.dp)
+                .fillMaxWidth()
         )
+        Text(
+            text = "Date of Task",
+            fontSize = 15.sp,
+            modifier = Modifier.padding(5.dp),
+        )
+        OutlinedTextField(
 
+            label = { Text("") },
+            value = newTaskDescription.value,
+            onValueChange = { newValue: String ->
+                newTaskDescription.value = newValue
+            },
+            placeholder = {
+                Text("")
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions
+                .Default
+                .copy(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+            modifier = Modifier
+                .padding(15.dp)
+                .fillMaxWidth()
+        )
+        Text(
+            text = "Time of Task",
+            fontSize = 15.sp,
+            modifier = Modifier.padding(5.dp),
+        )
+        OutlinedTextField(
+
+            label = { Text("") },
+            value = newTaskDescription.value,
+            onValueChange = { newValue: String ->
+                newTaskDescription.value = newValue
+            },
+            placeholder = {
+                Text("")
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions
+                .Default
+                .copy(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+            modifier = Modifier
+                .padding(15.dp)
+                .fillMaxWidth()
+        )
+        Row(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                "Set an alarm?",
+                modifier = Modifier.padding(end = 5.dp)
+            )
+
+            //TODO: Testing implementation of checkbox
+//            Checkbox(
+//                checked = taskModel.isAwesome.value,
+//                onCheckedChange = taskModel::isAlarmSet
+//            )
+        }
     }
 }
