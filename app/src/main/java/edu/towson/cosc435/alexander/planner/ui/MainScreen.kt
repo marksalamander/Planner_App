@@ -3,6 +3,7 @@ package edu.towson.cosc435.alexander.planner.ui
 import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
@@ -71,6 +72,24 @@ private fun BottomBar(
 
             label = {
                 Text("Task List")
+            }
+        )
+
+        NavigationBarItem(
+            selected = currentRoute == Routes.TaskWizard.route,
+            onClick = {
+                nav.navigate(Routes.TaskWizard.route) {
+                    launchSingleTop = true
+                    popUpTo(Routes.TaskWizard.route)
+                }
+            },
+
+            icon = {
+                Icon(Icons.Default.AddCircle, "")
+            },
+
+            label = {
+                Text("Add Task")
             }
         )
     }
