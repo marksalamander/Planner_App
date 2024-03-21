@@ -1,6 +1,8 @@
 package edu.towson.cosc435.alexander.planner.ui
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
@@ -19,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import edu.towson.cosc435.alexander.planner.ui.nav.PlannerNav
 import edu.towson.cosc435.alexander.planner.ui.nav.Routes
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
