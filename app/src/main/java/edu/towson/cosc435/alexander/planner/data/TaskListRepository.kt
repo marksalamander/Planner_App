@@ -4,7 +4,7 @@ import edu.towson.cosc435.alexander.planner.data.model.Task
 
 interface TaskListRepository {
 
-    fun getTask(): List<Task>
+    fun getTasks(): List<Task>
 
     fun deleteTask(song: Task)
 
