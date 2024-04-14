@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -19,13 +17,16 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import edu.towson.cosc435.alexander.planner.ui.calendar.CalendarViewModel
 import edu.towson.cosc435.alexander.planner.ui.nav.PlannerNav
 import edu.towson.cosc435.alexander.planner.ui.nav.Routes
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModel: CalendarViewModel
+) {
     val nav = rememberNavController()
 
     Scaffold(
@@ -33,7 +34,7 @@ fun MainScreen() {
             BottomBar(nav = nav)
         }
     ) {
-        PlannerNav(nav)
+        PlannerNav(navController = nav, viewModel = viewModel)
     }
 }
 
