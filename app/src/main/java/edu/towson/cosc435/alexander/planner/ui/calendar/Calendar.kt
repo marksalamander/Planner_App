@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import edu.towson.cosc435.alexander.planner.data.model.CalendarDate
 import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -47,18 +48,11 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
-// Defines a data class to represent a date
-data class CalendarDate(
-    val day: Int,
-    val month: Int,
-    val year: Int
-)
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendar(
     tasks: List<Task>,
-    onDateSelected: (CalendarDate) -> Unit
+    onDateSelected: (CalendarDate, List<Task>) -> Unit
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var calendarGrid by remember(currentMonth) { mutableStateOf(generateCalendarGrid(currentMonth)) }
@@ -146,7 +140,9 @@ fun Calendar(
                 ) {
                     for (date in row) {
                         DayCell(date = date, tasks = datesWithTasks) {selectedDate ->
-                            onDateSelected(selectedDate)
+                            onDateClick(date = selectedDate, tasks = tasks) {date, currentTasks ->
+                                onDateSelected(date, currentTasks)
+                            }
                         }
                     }
                 }
@@ -155,6 +151,7 @@ fun Calendar(
     }
 }
 
+// Parses Task.taskDate string, converting it to type CalendarDate
 fun parseDateStringToDate(dateString: String): CalendarDate {
     val dateParts = dateString.split("-") // Assuming the date string is in "day-month-year" format
     val day = dateParts[0].toInt()
@@ -190,7 +187,13 @@ fun generateCalendarGrid(month: YearMonth): List<List<CalendarDate>> {
             calendarGrid.add(currentRow)
             currentRow = mutableListOf()
         } else {
-            currentRow.add(CalendarDate(day = currentDay, month = month.monthValue, year = month.year))
+            currentRow.add(
+                CalendarDate(
+                    day = currentDay,
+                    month = month.monthValue,
+                    year = month.year
+                )
+            )
             currentDay++
         }
     }
@@ -206,6 +209,21 @@ fun generateCalendarGrid(month: YearMonth): List<List<CalendarDate>> {
     return calendarGrid
 }
 
+// Returns the date that was clicked, as well as tasks that occur on the date
+fun onDateClick (
+    date: CalendarDate,
+    tasks: List<Task>,
+    dateSelected: (CalendarDate, List<Task>) -> Unit
+) {
+    val currentTasks = mutableListOf<Task>()
+    for(task in tasks) {
+        if(parseDateStringToDate(task.taskDate) == date) {
+            currentTasks.add(task)
+        }
+    }
+    dateSelected(date, currentTasks)
+}
+
 // Draws calender cell for each day within the month
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -217,8 +235,6 @@ fun DayCell(
     val isToday = isToday(date)
     val hasTasks = date in tasks
     val theme = MaterialTheme.colorScheme
-    // Highlights current day
-    val background = if (isToday) theme.primary.copy(alpha = 0.45f) else Color.Transparent
 
     Box(
         modifier = Modifier

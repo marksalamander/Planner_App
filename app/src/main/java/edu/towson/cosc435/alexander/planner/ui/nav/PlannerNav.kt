@@ -28,14 +28,15 @@ fun PlannerNav(
 ) {
     val tasks = remember { mutableListOf<Task>() }
     tasks.add(Task("1", "Task 1", "Summary 1", "22-4-2024", "Time", true))
+    tasks.add(Task("2", "Task 2", "Summary 2", "30-4-2024", "Time", true))
     PlannerTheme {
         NavHost(navController, startDestination = Routes.Calendar.route) {
             composable(Routes.TaskList.route) {
-                TaskListView()
+                TaskListView(tasks = tasks)
             }
             composable(Routes.Calendar.route) {
-                Calendar(tasks = tasks) { selectedDate ->
-                    viewModel.setSelectedDate(selectedDate)
+                Calendar(tasks = tasks) { selectedDate, currentTasks ->
+                    viewModel.setSelectedDate(selectedDate, currentTasks)
                     navController.navigate(Routes.SelectedDatePage.route)
                 }
             }
@@ -47,7 +48,7 @@ fun PlannerNav(
             composable(Routes.SelectedDatePage.route) {
                 val selectedDate = viewModel.selectedDate.observeAsState()
                 selectedDate.value?.let { date ->
-                    SelectedDatePage(date = date)
+                    SelectedDatePage(date = date, tasks = viewModel.tasks)
                 }
             }
         }

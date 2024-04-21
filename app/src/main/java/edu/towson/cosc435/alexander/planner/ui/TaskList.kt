@@ -1,48 +1,29 @@
 package edu.towson.cosc435.alexander.planner.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import edu.towson.cosc435.alexander.planner.data.model.Task
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.graphics.Color
 
 // Composable function for the list of tasks displayed on the task list page
 @ExperimentalFoundationApi
 @Composable
 fun TaskListView(
-//    tasks: List<Task>
+    tasks: List<Task>
 )
 {
-    val exampleArray = arrayOf(
-        Task(1, "Task 1", "Description of Task 1"),
-        Task(2, "Task 2", "Description of Task 2"),
-        Task(3, "Task 3", "Description of Task 3"),
-        Task(4, "Task 4", "Description of Task 4"),
-        Task(5, "Task 5", "Description of Task 5"),
-        Task(6, "Task 6", "Description of Task 6"),
-        Task(7, "Task 7", "Description of Task 7"),
-        Task(8, "Task 8", "Description of Task 8"),
-        Task(9, "Task 9", "Description of Task 9"),
-        Task(10, "Task 10", "Description of Task 10")
-    )
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -64,7 +45,7 @@ fun TaskListView(
             .padding(5.dp)
         ) {
             // TODO: Implement listing TaskItems using this LazyColumn
-            items(items = exampleArray) { item ->
+            items(items = tasks) { item ->
                 // How each item in myArray is displayed in the LazyColumn
                 Box(modifier = Modifier
                     .border(2.dp, Color.Black)
@@ -95,13 +76,3 @@ fun TaskItem(task: Task) {
         modifier = Modifier.padding(vertical = 8.dp)
     )
 }
-
-// Data structure for Tasks
-data class Task(val id: Int, val title: String, val description: String)
-
-// Temporary list of placeholder Tasks for testing
-val dummyTasks = listOf(
-    Task(1, "Task 1", "Description of Task 1"),
-    Task(2, "Task 2", "Description of Task 2"),
-    Task(3, "Task 3", "Description of Task 3")
-)
