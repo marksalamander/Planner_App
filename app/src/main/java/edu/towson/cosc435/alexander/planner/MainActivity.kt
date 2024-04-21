@@ -27,6 +27,7 @@ import edu.towson.cosc435.alexander.planner.ui.MainScreen
 import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
 
 // TODO: Import navigation (for some reason I can't find the correct statements)
+// TODO - Initialize database
 
 class MainActivity : ComponentActivity() {
 
