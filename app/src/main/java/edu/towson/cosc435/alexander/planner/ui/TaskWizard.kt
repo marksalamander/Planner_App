@@ -1,4 +1,3 @@
-package edu.towson.cosc435.alexander.planner.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,10 +15,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import edu.towson.cosc435.alexander.planner.data.model.Task
 
 // Composable function for the page to create/read/update/delete tasks/events
 @Composable
-fun TaskWizard(onTasksCreated: (Task) -> Unit) {
+fun TaskWizard(
+    onTasksCreated: (Task) -> Unit
+) {
     // TODO: Replace this placeholder text with actual task wizard implementation
     val newTaskTitle = remember { mutableStateOf("") }
     val newTaskDescription = remember { mutableStateOf("") }

@@ -39,7 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import edu.towson.cosc435.alexander.planner.ui.Task
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -48,12 +48,15 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 // Defines a data class to represent a date
-data class CalendarDate(val day: Int, val month: Int, val year: Int)
+data class CalendarDate(
+    val day: Int,
+    val month: Int,
+    val year: Int
+)
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendar(
-    current: YearMonth,
     tasks: List<Task>,
     onDateSelected: (CalendarDate) -> Unit
 ) {
@@ -132,6 +135,8 @@ fun Calendar(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        val datesWithTasks = getDatesWithTasks(tasks)
+
         // Generates dates for each cell within the calendar grid
         LazyColumn {
             itemsIndexed(calendarGrid) { _, row ->
@@ -140,7 +145,7 @@ fun Calendar(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     for (date in row) {
-                        DayCell(date = date) {selectedDate ->
+                        DayCell(date = date, tasks = datesWithTasks) {selectedDate ->
                             onDateSelected(selectedDate)
                         }
                     }
@@ -150,6 +155,18 @@ fun Calendar(
     }
 }
 
+fun parseDateStringToDate(dateString: String): CalendarDate {
+    val dateParts = dateString.split("-") // Assuming the date string is in "day-month-year" format
+    val day = dateParts[0].toInt()
+    val month = dateParts[1].toInt()
+    val year = dateParts[2].toInt()
+    return CalendarDate(day, month, year)
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun getDatesWithTasks(tasks: List<Task>): List<CalendarDate> {
+    return tasks.map { parseDateStringToDate(it.taskDate) }
+}
 
 // Generates the calendar grid
 @RequiresApi(Build.VERSION_CODES.O)
@@ -194,9 +211,11 @@ fun generateCalendarGrid(month: YearMonth): List<List<CalendarDate>> {
 @Composable
 fun DayCell(
     date: CalendarDate,
+    tasks: List<CalendarDate>,
     onItemClick: (CalendarDate) -> Unit
 ) {
     val isToday = isToday(date)
+    val hasTasks = date in tasks
     val theme = MaterialTheme.colorScheme
     // Highlights current day
     val background = if (isToday) theme.primary.copy(alpha = 0.45f) else Color.Transparent
@@ -206,7 +225,13 @@ fun DayCell(
             .padding(4.dp)
             .size(48.dp)
             .clip(CircleShape)
-            .background(background)
+            .background(
+                color = when {
+                    isToday -> theme.primary.copy(alpha = 0.45f) // Change color for selected date
+                    hasTasks -> Color.Red.copy(alpha = 0.45f) // Change color for date with tasks
+                    else -> Color.Transparent
+                }
+            )
             .clickable { onItemClick(date) },
         contentAlignment = Alignment.Center
     ) {
