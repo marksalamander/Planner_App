@@ -77,23 +77,27 @@ fun SelectedDatePage(
                         .fillMaxWidth(),
                     elevation = CardDefaults.cardElevation(10.dp)
                 ) {
-                    Row() {
+                    Row(
+                        modifier = Modifier.padding(end = 35.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
                         Column(
                             modifier = Modifier
                                 .padding(5.dp) // Add space around each item for visibility
+                                .padding(5.dp) // Add space around each item for visibility
                                 .fillMaxWidth()
                         ) {
-                            Text(text = item.title, style = MaterialTheme.typography.titleLarge)
+                            Text(text = item.title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 15.dp))
                             Text(
                                 text = item.description,
                                 style = MaterialTheme.typography.bodyLarge
                             )
-                            IconButton(onClick = {
-                                //                          viewModel.toggleDeleteModal()
-                            }) {
-                                Icon(Icons.Default.Delete, contentDescription = "Delete")
-                            }
                         }
+                        Checkbox(
+                            checked = item.isSelected,
+                            onCheckedChange = null,
+                            modifier = Modifier.padding(end=5.dp))
                     }
                 }
             }

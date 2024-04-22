@@ -66,6 +66,5 @@ fun TaskRow(
             }
 
         }
-        Checkbox(checked = task.isSelected, onCheckedChange = null, modifier = Modifier.padding(end=5.dp))
     }
 }
