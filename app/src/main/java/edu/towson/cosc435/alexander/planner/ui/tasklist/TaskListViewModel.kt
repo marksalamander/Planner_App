@@ -16,10 +16,13 @@ class TaskListViewModel : ViewModel() {
     private val _selected: MutableState<Task?>
     val selectedTask: State<Task?>
 
+    private val _selectedTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
+    val selectedItems: State<List<Task>> = _selectedTasks
+
     private val _repository: TaskListRepository = TaskRepository()
 
-//    val anyItemsSelected: Boolean
-//        get() = _tasks.value.any { it.isSelected }
+    val anyItemsSelected: Boolean
+        get() = _tasks.value.any { it.isSelected }
 
 
     init {

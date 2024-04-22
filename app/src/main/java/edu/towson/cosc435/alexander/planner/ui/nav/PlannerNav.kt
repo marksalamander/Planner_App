@@ -1,12 +1,15 @@
 package edu.towson.cosc435.alexander.planner.ui.nav
 
-import TaskWizard
 import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,10 +19,12 @@ import edu.towson.cosc435.alexander.planner.ui.TaskListView
 import edu.towson.cosc435.alexander.planner.ui.calendar.Calendar
 import edu.towson.cosc435.alexander.planner.ui.calendar.CalendarViewModel
 import edu.towson.cosc435.alexander.planner.ui.calendar.SelectedDatePage
+import edu.towson.cosc435.alexander.planner.ui.newtask.NewTaskView
+import edu.towson.cosc435.alexander.planner.ui.tasklist.TaskListViewModel
 import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlannerNav(
@@ -51,9 +56,12 @@ fun PlannerNav(
                 }
             }
             composable(Routes.TaskWizard.route) {
-                TaskWizard { task ->
-                    tasks.add(task)
-                }
+                val vm: TaskListViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
+                NewTaskView(onAddTask = { newTask: Task ->
+                    vm.addTask(newTask)
+                    navController.popBackStack() // navigate backwards!
+                })
+
             }
             composable(Routes.SelectedDatePage.route) {
                 val selectedDate = viewModel.selectedDate.observeAsState()

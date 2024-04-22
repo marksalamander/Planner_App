@@ -48,7 +48,7 @@ fun TaskListView (
         val content: @Composable () -> Unit = {
             LazyColumn {
                 items(tasks) { task ->
-                    TaskRow(task)
+                    TaskRow(task, {}, {}, {})
                 }
             }
         }

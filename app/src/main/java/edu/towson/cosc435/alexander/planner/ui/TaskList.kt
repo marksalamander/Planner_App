@@ -62,7 +62,7 @@ fun TaskListView(
                     .padding(bottom = 60.dp)
             ) {
                 // TODO: Implement listing TaskItems using this LazyColumn
-                items(items = tasks) { item ->
+                items(items = tasks) { task ->
                     // How each item in myArray is displayed in the LazyColumn {
                     Card(
                         shape = RoundedCornerShape(5.dp),
@@ -79,16 +79,11 @@ fun TaskListView(
                                     .padding(5.dp) // Add space around each item for visibility
                                     .fillMaxWidth()
                             ) {
-                                Text(text = item.title, style = MaterialTheme.typography.titleLarge)
+                                Text(text = task.title, style = MaterialTheme.typography.titleLarge)
                                 Text(
-                                    text = item.description,
+                                    text = task.description,
                                     style = MaterialTheme.typography.bodyLarge
                                 )
-                                IconButton(onClick = {
-          //                          viewModel.toggleDeleteModal()
-                                }) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Delete")
-                                }
                             }
                         }
                     }

@@ -36,8 +36,8 @@ class NewTaskViewModel : ViewModel() {
         _taskTime.value = taskTime
     }
 
-    fun setAlarm(isAlarmSet: Boolean){
-        _isSelected.value = isAlarmSet
+    fun setSelected(isSelected: Boolean){
+        _isSelected.value = isSelected
     }
 
 
