@@ -16,8 +16,8 @@ class NewTaskViewModel : ViewModel() {
     val taskDate: State<String> = _taskDate
     private val _taskTime: MutableState<String> = mutableStateOf("")
     val taskTime: State<String> = _taskTime
-    private val _isAlarmSet: MutableState<Boolean> = mutableStateOf(false)
-    val isAlarmSet: State<Boolean> = _isAlarmSet
+    private val _isSelected: MutableState<Boolean> = mutableStateOf(false)
+    val isSelected: State<Boolean> = _isSelected
 
 
     fun setTitle(title: String) {
@@ -37,7 +37,7 @@ class NewTaskViewModel : ViewModel() {
     }
 
     fun setAlarm(isAlarmSet: Boolean){
-        _isAlarmSet.value = isAlarmSet
+        _isSelected.value = isAlarmSet
     }
 
 
@@ -60,6 +60,6 @@ class NewTaskViewModel : ViewModel() {
             throw Exception("The task needs you to set a time")
         }
 
-        return Task("", title.value, description.value, taskDate.value, taskTime.value, isAlarmSet.value)
+        return Task("", title.value, description.value, taskDate.value, taskTime.value, isSelected.value)
     }
 }

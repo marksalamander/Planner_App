@@ -1,5 +1,6 @@
 package edu.towson.cosc435.alexander.planner.ui.tasklist
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,14 +13,18 @@ import androidx.compose.runtime.ComposableTargetMarker
 import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import edu.towson.cosc435.alexander.planner.data.model.Task
 import edu.towson.cosc435.alexander.planner.ui.AddTaskButton
+import edu.towson.cosc435.alexander.planner.ui.LandscapeView
 import edu.towson.cosc435.alexander.planner.ui.TaskRow
 
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalComposeApi
 @Composable
 fun TaskListView (
@@ -36,20 +41,28 @@ fun TaskListView (
     Box(
         contentAlignment = Alignment.Center,
     ) {
-        Column() {
-            //SearchBar( onFilter = onFilter )
-
+    }
+    Column(
+//        modifier = Modifier.alpha(if(deleting) 0.2f else 1.0f)
+    ) {
+        val content: @Composable () -> Unit = {
             LazyColumn {
-                items(tasks) {task ->
-
-                    //TODO: Figure this out
-                    //TaskRow(task)
+                items(tasks) { task ->
+                    TaskRow(task)
                 }
             }
         }
+        if(LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            content()
+        } else {
+            LandscapeView(selectedTask = selectedTask?.title) {
+                content()
+            }
+        }
+    }
         AddTaskButton(
             onClick = onAddTask,
-            modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd)
+            modifier = Modifier.padding(16.dp)
         )
-    }
+
 }

@@ -18,18 +18,22 @@ class TaskListViewModel : ViewModel() {
 
     private val _repository: TaskListRepository = TaskRepository()
 
+//    val anyItemsSelected: Boolean
+//        get() = _tasks.value.any { it.isSelected }
+
+
     init {
         _tasks.value = _repository.getTasks()
         _selected = mutableStateOf(null)
         selectedTask = _selected
     }
 
-    fun addSong(song: Task) {
+    fun addTask(song: Task) {
         _repository.addTask(song)
         _tasks.value = _repository.getTasks()
     }
 
-    fun deleteSong(song: Task) {
+    fun deleteTask(song: Task) {
         _repository.deleteTask(song)
         _tasks.value = _repository.getTasks()
     }

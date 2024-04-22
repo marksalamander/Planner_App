@@ -12,6 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,27 +61,39 @@ fun SelectedDatePage(
                 fontSize = 24.sp
             )
         }
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(5.dp)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp)
+                .padding(bottom = 75.dp)
         ) {
             // TODO: Implement listing TaskItems using this LazyColumn
             items(items = tasks) { item ->
                 // How each item in myArray is displayed in the LazyColumn
-                Box(modifier = Modifier
-                    .border(2.dp, Color.Black)
-                    .padding(5.dp)
+                Card(
+                    shape = RoundedCornerShape(5.dp),
+                    modifier = Modifier
+                        .padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)
+                        .fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(10.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(5.dp) // Add space around each item for visibility
-                            .padding(5.dp) // Add space around each item for visibility
-                            .fillMaxWidth()
-                    ) {
-                        Text(text = item.title, style = MaterialTheme.typography.titleLarge)
-
-                        Text(text = item.description, style = MaterialTheme.typography.bodyLarge)
-
+                    Row() {
+                        Column(
+                            modifier = Modifier
+                                .padding(5.dp) // Add space around each item for visibility
+                                .fillMaxWidth()
+                        ) {
+                            Text(text = item.title, style = MaterialTheme.typography.titleLarge)
+                            Text(
+                                text = item.description,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            IconButton(onClick = {
+                                //                          viewModel.toggleDeleteModal()
+                            }) {
+                                Icon(Icons.Default.Delete, contentDescription = "Delete")
+                            }
+                        }
                     }
                 }
             }

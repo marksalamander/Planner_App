@@ -27,8 +27,18 @@ fun PlannerNav(
     viewModel: CalendarViewModel
 ) {
     val tasks = remember { mutableListOf<Task>() }
-    tasks.add(Task("1", "Task 1", "Summary 1", "22-4-2024", "Time", true))
-    tasks.add(Task("2", "Task 2", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("1", "Task 1", "This is going to test how much text can fit onto the card.", "22-4-2024", "Time", true))
+    tasks.add(Task("2", "Task 2", "Can you imagine waking up on a Sunday? Well you gotta, no ifs or buts.", "30-4-2024", "Time", true))
+    tasks.add(Task("3", "Task 3", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("4", "Task 4", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("5", "Task 5", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("6", "Task 6", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("7", "Task 7", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("8", "Task 8", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("9", "Task 9", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("10", "Task 10", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("11", "Task 11", "Summary 2", "30-4-2024", "Time", true))
+    tasks.add(Task("12", "Task 12", "Summary 2", "30-4-2024", "Time", true))
     PlannerTheme {
         NavHost(navController, startDestination = Routes.Calendar.route) {
             composable(Routes.TaskList.route) {

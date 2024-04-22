@@ -22,6 +22,15 @@ class TaskRepository : TaskListRepository {
     override fun addTask(task: Task) {
         _tasks = listOf(task) + _tasks
     }
+    suspend fun toggleSelected(task: Task) {
+//        _tasks = _tasks.map { i ->
+//            if(i.id == task.id) {
+//                i.copy(isSelected = !i.isSelected)
+//            } else {
+//                i
+//            }
+//        }
+    }
 
     //TODO: Future interface additions
 
