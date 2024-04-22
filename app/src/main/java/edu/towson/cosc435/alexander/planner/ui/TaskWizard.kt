@@ -90,9 +90,9 @@ fun TaskWizard(
         OutlinedTextField(
 
             label = { Text("") },
-            value = newTaskDescription.value,
+            value = newTaskDate.value,
             onValueChange = { newValue: String ->
-                newTaskDescription.value = newValue
+                newTaskDate.value = newValue
             },
             placeholder = {
                 Text("")
@@ -113,9 +113,9 @@ fun TaskWizard(
         OutlinedTextField(
 
             label = { Text("") },
-            value = newTaskDescription.value,
+            value = newTaskTime.value,
             onValueChange = { newValue: String ->
-                newTaskDescription.value = newValue
+                newTaskTime.value = newValue
             },
             placeholder = {
                 Text("")
