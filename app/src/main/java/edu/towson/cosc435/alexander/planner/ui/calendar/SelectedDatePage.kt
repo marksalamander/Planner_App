@@ -1,9 +1,12 @@
-package edu.towson.cosc435.alexander.planner.ui
+package edu.towson.cosc435.alexander.planner.ui.calendar
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,34 +15,44 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import edu.towson.cosc435.alexander.planner.data.model.CalendarDate
 import edu.towson.cosc435.alexander.planner.data.model.Task
+import java.time.Month
+import java.time.format.TextStyle
+import java.util.Locale
 
-// Composable function for the list of tasks displayed on the task list page
-@ExperimentalFoundationApi
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TaskListView(
+fun SelectedDatePage(
+    date: CalendarDate,
     tasks: List<Task>
-)
-{
+) {
+    val day = date.day.toString()
+    val month = Month.of(date.month).getDisplayName(TextStyle.FULL, Locale.getDefault())
+    val year = date.year.toString()
+
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // App title
-        Text(
-            text = "Task Planner",
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        // Heading for task list
-        Text(
-            text = "Tasks",
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        // Task list
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "$month $day, $year",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(vertical = 16.dp),
+                fontSize = 24.sp
+            )
+        }
         LazyColumn(modifier = Modifier
             .fillMaxSize()
             .padding(5.dp)
@@ -66,13 +79,4 @@ fun TaskListView(
             }
         }
     }
-}
-
-// Composable functions for the individual task listings on the task list
-@Composable
-fun TaskItem(task: Task) {
-    Text(
-        text = task.title,
-        modifier = Modifier.padding(vertical = 8.dp)
-    )
 }

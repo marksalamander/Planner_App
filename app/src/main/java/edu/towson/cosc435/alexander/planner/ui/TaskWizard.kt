@@ -1,12 +1,9 @@
-package edu.towson.cosc435.alexander.planner.ui
 
-import edu.towson.cosc435.alexander.planner.data.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,10 +15,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import edu.towson.cosc435.alexander.planner.data.model.Task
 
 // Composable function for the page to create/read/update/delete tasks/events
 @Composable
-fun TaskWizard() {
+fun TaskWizard(
+    onTasksCreated: (Task) -> Unit
+) {
     // TODO: Replace this placeholder text with actual task wizard implementation
     val newTaskTitle = remember { mutableStateOf("") }
     val newTaskDescription = remember { mutableStateOf("") }
@@ -90,9 +90,9 @@ fun TaskWizard() {
         OutlinedTextField(
 
             label = { Text("") },
-            value = newTaskDescription.value,
+            value = newTaskDate.value,
             onValueChange = { newValue: String ->
-                newTaskDescription.value = newValue
+                newTaskDate.value = newValue
             },
             placeholder = {
                 Text("")
@@ -113,9 +113,9 @@ fun TaskWizard() {
         OutlinedTextField(
 
             label = { Text("") },
-            value = newTaskDescription.value,
+            value = newTaskTime.value,
             onValueChange = { newValue: String ->
-                newTaskDescription.value = newValue
+                newTaskTime.value = newValue
             },
             placeholder = {
                 Text("")
