@@ -3,6 +3,7 @@ package edu.towson.cosc435.alexander.planner.ui.calendar
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -53,8 +54,9 @@ fun Calendar(
     viewModel: CalendarViewModel,
     onDateSelected: (LocalDate) -> Unit
 ) {
+    var tasks = remember { (viewModel.tasks) }
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-    var calendarGrid by remember(currentMonth) { mutableStateOf(generateCalendarGrid(currentMonth)) }
+    var calendarGrid by remember(currentMonth) { mutableStateOf(generateCalendarGrid(currentMonth, viewModel)) }
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -74,7 +76,7 @@ fun Calendar(
                     // Performs update asynchronously in a separate coroutine, allowing smoother transition when changing months
                     coroutineScope.launch {
                         currentMonth = currentMonth.minusMonths(1)
-                        calendarGrid = generateCalendarGrid(currentMonth)
+                        calendarGrid = generateCalendarGrid(currentMonth, viewModel)
                     }
                 }
             ) {
@@ -98,7 +100,7 @@ fun Calendar(
                     // Performs update asynchronously in a separate coroutine, allowing smoother transition when changing months
                     coroutineScope.launch {
                         currentMonth = currentMonth.plusMonths(1)
-                        calendarGrid = generateCalendarGrid(currentMonth)
+                        calendarGrid = generateCalendarGrid(currentMonth, viewModel)
                     }
                 }
             ) {
@@ -129,7 +131,8 @@ fun Calendar(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        val datesWithTasks = getDatesWithTasks(viewModel.tasks.value)
+
+        val datesWithTasks = getDatesWithTasks(tasks.value)
 
         // Generates dates for each cell within the calendar grid
         LazyColumn {
@@ -141,7 +144,6 @@ fun Calendar(
                     for (date in row) {
                         DayCell(date = date, tasks = datesWithTasks) { selectedDate ->
                             viewModel.setSelectedDate(selectedDate)
-                            viewModel.loadSelectedDateTasks()
                             onDateSelected(date)
                         }
                     }
@@ -159,7 +161,8 @@ fun getDatesWithTasks(tasks: List<Task>): List<LocalDate> {
 
 // Generates the calendar grid
 @RequiresApi(Build.VERSION_CODES.O)
-fun generateCalendarGrid(month: YearMonth): List<List<LocalDate>> {
+fun generateCalendarGrid(month: YearMonth, vm: CalendarViewModel): List<List<LocalDate>> {
+    vm.getTasks()
     val firstDayOfMonth = month.atDay(1).dayOfWeek // Gets the first day of the month
     val startingDayOffset = (firstDayOfMonth.value - DayOfWeek.SUNDAY.value + 7) % 7
 
@@ -205,6 +208,7 @@ fun DayCell(
 ) {
     val isToday = isToday(date)
     val hasTasks = date in tasks
+    Log.d("Dates", hasTasks.toString())
     val theme = MaterialTheme.colorScheme
 
     Box(
@@ -214,7 +218,7 @@ fun DayCell(
             .clip(CircleShape)
             .background(
                 color = when {
-                    isToday -> theme.primary.copy(alpha=0.45f)
+                    isToday -> theme.primary.copy(alpha = 0.45f)
                     hasTasks -> Color.Red.copy(alpha = 0.45f) // Change color for selected date
                     else -> Color.Transparent
                 }

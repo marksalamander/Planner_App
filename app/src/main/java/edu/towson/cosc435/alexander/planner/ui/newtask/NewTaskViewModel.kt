@@ -8,9 +8,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.towson.cosc435.alexander.planner.data.database.Task
 import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -18,7 +18,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-@HiltViewModel
 class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
     private val repository : TaskRepository = TaskRepository(getApplication())
 
@@ -105,7 +104,7 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
     }
 
     fun insertTask(task: Task) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             repository.addTask(task)
         }
     }
@@ -121,4 +120,8 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
         return LocalTime.parse(timeString, formatter)
     }
+}
+
+val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
+    throwable.printStackTrace()
 }

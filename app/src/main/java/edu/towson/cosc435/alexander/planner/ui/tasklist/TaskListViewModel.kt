@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.towson.cosc435.alexander.planner.data.database.Task
 import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -29,7 +30,7 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
         get() = _selectedTasks.value.isNotEmpty()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
                 _tasks.value = repository.getTasks()
         }
     }
@@ -57,4 +58,7 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
     fun clearSelected() {
         _selectedTasks.value = emptySet()
     }
+}
+val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
+    throwable.printStackTrace()
 }

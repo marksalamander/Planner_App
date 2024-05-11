@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.towson.cosc435.alexander.planner.data.database.Task
 import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -24,6 +25,8 @@ class CalendarViewModel (app: Application) : AndroidViewModel(app) {
     val selectedDate: LiveData<LocalDate> = _selectedDate
     private val _tasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val tasks: State<List<Task>> = _tasks
+    private val _dateTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
+    val dateTasks: State<List<Task>> = _dateTasks
     private val repository : TaskRepository = TaskRepository(getApplication())
 
     init {
@@ -34,10 +37,20 @@ class CalendarViewModel (app: Application) : AndroidViewModel(app) {
         _selectedDate.value = date
     }
 
-    fun loadSelectedDateTasks() {
-        val selectedDateForLoading = selectedDate.value ?: LocalDate.now()
-        viewModelScope.launch(Dispatchers.IO) {
-            _tasks.value = repository.getTasksForDate(selectedDateForLoading)
+    fun getTasks() {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            _tasks.value = repository.getTasks()
         }
     }
+
+    fun loadSelectedDateTasks() {
+        val selectedDateForLoading = selectedDate.value ?: LocalDate.now()
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            _dateTasks.value = repository.getTasksForDate(selectedDateForLoading)
+        }
+    }
+}
+
+val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->
+    throwable.printStackTrace()
 }

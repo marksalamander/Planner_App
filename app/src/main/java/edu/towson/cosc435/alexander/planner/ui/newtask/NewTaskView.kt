@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
@@ -20,20 +19,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.towson.cosc435.alexander.planner.data.database.Task
-import edu.towson.cosc435.alexander.planner.data.model.OldTask
-import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
-import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalTime
 
 
 @RequiresApi(Build.VERSION_CODES.O)

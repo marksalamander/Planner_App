@@ -51,8 +51,7 @@ fun PlannerNav(
             }
             composable(Routes.Calendar.route) {
                 val vm: CalendarViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
-                Calendar(viewModel = vm) { selectedDate ->
-                    vm.setSelectedDate(selectedDate)
+                Calendar(viewModel = vm) { _ ->
                     navController.navigate(Routes.SelectedDatePage.route)
                 }
             }
@@ -66,9 +65,10 @@ fun PlannerNav(
             }
             composable(Routes.SelectedDatePage.route) {
                 val vm: CalendarViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
+                vm.loadSelectedDateTasks()
                 val selectedDate = vm.selectedDate.observeAsState()
                 selectedDate.value?.let { date ->
-                    SelectedDatePage(date = date, tasks = vm.tasks)
+                    SelectedDatePage(date = date, tasks = vm.dateTasks)
                 }
             }
         }
