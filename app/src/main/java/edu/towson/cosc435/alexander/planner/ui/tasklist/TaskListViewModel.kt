@@ -1,37 +1,60 @@
 package edu.towson.cosc435.alexander.planner.ui.tasklist
 
+import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import edu.towson.cosc435.alexander.planner.data.model.Task
-import edu.towson.cosc435.alexander.planner.data.TaskListRepository
-import edu.towson.cosc435.alexander.planner.data.impl.TaskRepository
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.towson.cosc435.alexander.planner.data.database.Task
+import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class TaskListViewModel : ViewModel() {
-    //TODO: Not sure we need this, but I added this as a placeholder
-    private val _tasks: MutableState<List<Task>> = mutableStateOf(listOf())
-    val songs: State<List<Task>> = _tasks
+@HiltViewModel
+class TaskListViewModel (app: Application) : AndroidViewModel(app) {
+    private val _tasks: MutableState<List<Task>> = mutableStateOf(emptyList())
+    val tasks: State<List<Task>> = _tasks
 
-    private val _selected: MutableState<Task?>
-    val selectedTask: State<Task?>
+    private val _selectedTasks: MutableState<Set<Task>> = mutableStateOf(emptySet())
+    val selectedTasks: State<List<Task>> = derivedStateOf {
+        _selectedTasks.value.toList()
+    }
 
-    private val _repository: TaskListRepository = TaskRepository()
+    private val repository : TaskRepository = TaskRepository(getApplication())
+
+    val anyItemsSelected: Boolean
+        get() = _selectedTasks.value.isNotEmpty()
 
     init {
-        _tasks.value = _repository.getTasks()
-        _selected = mutableStateOf(null)
-        selectedTask = _selected
+        viewModelScope.launch(Dispatchers.IO) {
+                _tasks.value = repository.getTasks()
+        }
     }
 
-    fun addSong(song: Task) {
-        _repository.addTask(song)
-        _tasks.value = _repository.getTasks()
+    fun addTask(task: Task) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addTask(task)
+        }
     }
 
-    fun deleteSong(song: Task) {
-        _repository.deleteTask(song)
-        _tasks.value = _repository.getTasks()
+    fun deleteTask(task: Task) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteTask(task)
+        }
     }
 
+    fun toggleSelected(task: Task) {
+        if (task in _selectedTasks.value) {
+            _selectedTasks.value -= task
+        } else {
+            _selectedTasks.value += task
+        }
+    }
+
+    fun clearSelected() {
+        _selectedTasks.value = emptySet()
+    }
 }

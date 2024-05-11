@@ -1,18 +1,43 @@
 package edu.towson.cosc435.alexander.planner.ui.calendar
 
+import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import edu.towson.cosc435.alexander.planner.data.model.CalendarDate
-import edu.towson.cosc435.alexander.planner.data.model.Task
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.towson.cosc435.alexander.planner.data.database.Task
+import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 
-class CalendarViewModel : ViewModel() {
-    private val _selectedDate = MutableLiveData<CalendarDate>()
-    val selectedDate: MutableLiveData<CalendarDate> = _selectedDate
-    private var _tasks = listOf<Task>()
-    val tasks: List<Task> get() = _tasks
+@RequiresApi(Build.VERSION_CODES.O)
+@HiltViewModel
+class CalendarViewModel (app: Application) : AndroidViewModel(app) {
+    private val _selectedDate = MutableLiveData<LocalDate>()
+    val selectedDate: LiveData<LocalDate> = _selectedDate
+    private val _tasks: MutableState<List<Task>> = mutableStateOf(emptyList())
+    val tasks: State<List<Task>> = _tasks
+    private val repository : TaskRepository = TaskRepository(getApplication())
 
-    fun setSelectedDate(date: CalendarDate, currentTasks: List<Task>) {
+    init {
+        _selectedDate.value = LocalDate.now()
+    }
+
+    fun setSelectedDate(date: LocalDate) {
         _selectedDate.value = date
-        _tasks = currentTasks
+    }
+
+    fun loadSelectedDateTasks() {
+        val selectedDateForLoading = selectedDate.value ?: LocalDate.now()
+        viewModelScope.launch(Dispatchers.IO) {
+            _tasks.value = repository.getTasksForDate(selectedDateForLoading)
+        }
     }
 }
