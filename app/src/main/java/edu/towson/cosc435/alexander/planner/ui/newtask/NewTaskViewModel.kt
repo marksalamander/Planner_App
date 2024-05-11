@@ -62,8 +62,8 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
     fun validateTask(
         title: String,
         description: String,
-        dateString: String,
-        timeString: String
+        date: LocalDate,
+        time: LocalTime
     ): Task {
         val titleValue = title.trim()
         val descriptionValue = description.trim()
@@ -81,7 +81,7 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
         // Validate and parse date
         val taskDateValue: LocalDate
         try {
-            taskDateValue = parseStringToDate(dateString)
+            taskDateValue = date
         } catch (e: DateTimeParseException) {
             throw IllegalArgumentException("Invalid date format. Please use DD-MM-YYYY format.")
         }
@@ -89,7 +89,7 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
         // Validate and parse time
         val taskTimeValue: LocalTime
         try {
-            taskTimeValue = parseStringToTime(timeString)
+            taskTimeValue = time
         } catch (e: DateTimeParseException) {
             throw IllegalArgumentException("Invalid time format. Please use HH:mm format.")
         }

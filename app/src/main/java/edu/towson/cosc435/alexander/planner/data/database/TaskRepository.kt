@@ -33,8 +33,8 @@ class TaskRepository(app: Application) :ITaskRepository {
         return db.taskDao().getAllTasks()
     }
 
-    override suspend fun deleteTask(song: Task) {
-        db.taskDao().deleteTask(song)
+    override suspend fun deleteTask(task: Task) {
+        db.taskDao().deleteTask(task)
     }
 
     override suspend fun addTask(task: Task) {

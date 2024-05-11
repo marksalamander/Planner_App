@@ -1,9 +1,12 @@
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import edu.towson.cosc435.alexander.planner.data.model.Task
 
 // Composable function for the page to create/read/update/delete tasks/events
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TaskWizard(
     onTasksCreated: (Task) -> Unit
@@ -87,6 +91,11 @@ fun TaskWizard(
             fontSize = 15.sp,
             modifier = Modifier.padding(5.dp),
         )
+        Button(onClick = {
+
+        }) {
+            Text("Date Picker")
+        }
         OutlinedTextField(
 
             label = { Text("") },

@@ -3,7 +3,6 @@ package edu.towson.cosc435.alexander.planner.ui.calendar
 
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -208,7 +207,6 @@ fun DayCell(
 ) {
     val isToday = isToday(date)
     val hasTasks = date in tasks
-    Log.d("Dates", hasTasks.toString())
     val theme = MaterialTheme.colorScheme
 
     Box(
