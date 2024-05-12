@@ -11,16 +11,13 @@ import java.time.LocalDate
 @Dao
 interface TaskDao {
     @Upsert
-    suspend fun updateTask(task: Task)
+    suspend fun upsertTask(task: Task)
 
     @Delete
     suspend fun deleteTask(task: Task)
 
-    @Insert
-    suspend fun addTask(task: Task)
-
     @Query("SELECT * FROM tasks")
-    fun getAllTasks(): List<Task>
+    fun getTasks(): List<Task>
 
     @Query("SELECT * FROM tasks WHERE taskDate = :date")
     fun getTasksForDate(date: LocalDate): List<Task>

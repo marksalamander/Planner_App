@@ -53,7 +53,6 @@ fun NewTaskView(
 
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
-
     val context = LocalContext.current
     MaterialDialog(
         dialogState = dateDialogState,
@@ -166,7 +165,7 @@ fun NewTaskView(
                         newTaskTitle,
                         newTaskDescription,
                         newTaskDate,
-                        newTaskTime
+                        newTaskTime,
                     )
                     onAddTask(task) // Notify the caller that a new task has been added
                 } catch (e: Exception) {

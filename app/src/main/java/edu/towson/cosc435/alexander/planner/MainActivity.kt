@@ -8,8 +8,15 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ExperimentalComposeApi
+import androidx.compose.ui.tooling.preview.Preview
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import edu.towson.cosc435.alexander.planner.ui.MainScreen
+import edu.towson.cosc435.alexander.planner.ui.tasklist.TaskListView
 import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
+import java.time.LocalDate
+import java.time.LocalTime
 
 // TODO: Import navigation (for some reason I can't find the correct statements)
 // TODO - Initialize database
@@ -36,11 +43,11 @@ class MainActivity : ComponentActivity() {
 //@Composable
 //fun DefaultPreview() {
 //    val tasks = (0..20).map { i ->
-//        Task(i,"Task $i", "Important thing to do $i", LocalDate.now(), LocalTime.now(), false, false)
+//        Task("Task $i", "Important thing to do $i", "This is task, there are many like it, but this one is mine. Ready yourself.",LocalDate.now(), LocalTime.now(), false, false)
 //    }
 //    PlannerTheme {
 //        Surface(color = MaterialTheme.colorScheme.background) {
-//            TaskListView(tasks, tasks[0], {}, {}, {}, {})
+//            TaskListView(tasks, {}, {}, {}, {})
 //        }
 //    }
 //}

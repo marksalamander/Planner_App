@@ -8,6 +8,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
 import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -18,6 +19,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
+@HiltViewModel
 class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
     private val repository : TaskRepository = TaskRepository(getApplication())
 
@@ -97,7 +99,7 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
         return Task(
 
             // TODO: Come back to this and put it a proper variable
-            id = 0,
+            id = "",
             title = titleValue,
             description = descriptionValue,
             taskDate = taskDateValue,
@@ -109,7 +111,7 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
 
     fun insertTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            repository.addTask(task)
+            repository.upsertTask(task)
         }
     }
 

@@ -24,13 +24,13 @@ interface TaskDao {
     suspend fun addTask(task: Task)
 
     @Query("SELECT * FROM tasks")
-    fun getAllTasks(): List<Task>
+    fun getTasks(): List<Task>
 
     @Query("SELECT * FROM tasks WHERE taskDate = :date")
     fun getTasksForDate(date: LocalDate): List<Task>
 }
 
-@Database(entities = [Task::class], version = 1, exportSchema = true)
+@Database(entities = [Task::class], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class PlannerDatabase : RoomDatabase() {
     // Gives the database a reference to the DAO

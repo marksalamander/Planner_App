@@ -35,9 +35,6 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
     private val _deleting: MutableState<Boolean>
     val deleting: State<Boolean>
 
-    val anyItemsSelected: Boolean
-        get() = _selectedTasks.value.isNotEmpty()
-
     init {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
                 _tasks.value = _repository.getTasks()
@@ -53,7 +50,7 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
 
     fun addTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
-            _repository.addTask(task)
+            _repository.upsertTask(task)
         }
     }
 
@@ -71,6 +68,12 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun getTasks() {
+        viewModelScope.launch(Dispatchers.IO + edu.towson.cosc435.alexander.planner.ui.calendar.coroutineExceptionHandler) {
+            _tasks.value = _repository.getTasks()
+        }
+    }
+
     fun deleteSelectedTasks() {
         viewModelScope.launch {
             _selectedTasks.value.forEach { task ->
@@ -80,6 +83,10 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
             _tasks.value = _repository.getTasks()
             _selectedTasks.value = _tasks.value.filter { it.isSelected }
         }
+    }
+
+    fun selectTask(task: Task) {
+        _selected.value = task
     }
 
     fun toggleDeleteModal() {

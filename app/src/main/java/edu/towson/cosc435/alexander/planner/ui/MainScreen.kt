@@ -72,9 +72,9 @@ private fun BottomBar(
         )
 
         NavigationBarItem(
-            selected = currentRoute == Routes.TaskList.route,
+            selected = currentRoute == Routes.TaskListView.route,
             onClick = {
-                nav.navigate(Routes.TaskList.route) {
+                nav.navigate(Routes.TaskListView.route) {
                     launchSingleTop = true
                 }
             },

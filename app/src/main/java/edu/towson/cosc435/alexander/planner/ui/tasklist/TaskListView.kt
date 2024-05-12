@@ -1,88 +1,71 @@
 package edu.towson.cosc435.alexander.planner.ui.tasklist
 
-import android.app.NotificationManager
-import android.content.Context
-import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.Manifest
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ExperimentalComposeApi
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import edu.towson.cosc435.alexander.planner.R
+import androidx.compose.ui.unit.sp
 import edu.towson.cosc435.alexander.planner.data.model.Task
-import edu.towson.cosc435.alexander.planner.ui.AddTaskButton
-import edu.towson.cosc435.alexander.planner.ui.LandscapeView
 import edu.towson.cosc435.alexander.planner.ui.TaskRow
 
 
-
-@OptIn(ExperimentalFoundationApi::class)
-@ExperimentalComposeApi
+// Composable function for the list of tasks displayed on the task list page
+@ExperimentalFoundationApi
 @Composable
-fun TaskListView (
-
-    tasks: List<Task>,
-    selectedTask: Task?,
+fun TaskListView(
+    tasks: State<List<Task>>,
     onDelete: (Task) -> Unit,
-    onFilter: (String) -> Unit,
-    onSelectTask: (Task) -> Unit,
-    onAddTask: () -> Unit,
-
-    ) {
-    val context = LocalContext.current
-
-    // Adam: Check for notification permission
-    var hasNotificationPermission by remember {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mutableStateOf(
-                ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            )
-        } else {
-            mutableStateOf(true)
-        }
-    }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            hasNotificationPermission = isGranted
-        }
-    )
-
-    // Adam: Send task reminder notification
-    fun remindAboutTask(taskId: Int, taskTitle: String) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = NotificationCompat.Builder(context, "1")
-            .setContentTitle("Task due soon!")
-            .setContentText(taskTitle)
-            // TODO: Replace R.drawable.ic_launcher_foreground with app icon
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .build()
-        notificationManager.notify(1, notification)
-    }
-
-    // TODO: Uncomment after implementing database
+    onToggle: (Task) -> Unit,
+    onSelectItem: (Task) -> Unit,
+    onAddTask: (Task) -> Unit
+) {
+//    val context = LocalContext.current
+//
+//    // Adam: Check for notification permission
+//    var hasNotificationPermission by remember {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            mutableStateOf(
+//                ContextCompat.checkSelfPermission(
+//                    context,
+//                    Manifest.permission.POST_NOTIFICATIONS
+//                ) == PackageManager.PERMISSION_GRANTED
+//            )
+//        } else {
+//            mutableStateOf(true)
+//        }
+//    }
+//
+//    val permissionLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.RequestPermission(),
+//        onResult = { isGranted ->
+//            hasNotificationPermission = isGranted
+//        }
+//    )
+//
+//    // Adam: Send task reminder notification
+//    fun remindAboutTask(taskId: Int, taskTitle: String) {
+//        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        val notification = NotificationCompat.Builder(context, "1")
+//            .setContentTitle("Task due soon!")
+//            .setContentText(taskTitle)
+//            // TODO: Replace R.drawable.ic_launcher_foreground with app icon
+//            .setSmallIcon(R.drawable.ic_launcher_foreground)
+//            .build()
+//        notificationManager.notify(1, notification)
+//    }
+//
+//    // TODO: Uncomment after implementing database
 //    // Adam: If any task is due tomorrow, send notification
 //    for (task in tasks) {
 //        if (/* Task date and time is tomorrow */) {
@@ -90,30 +73,51 @@ fun TaskListView (
 //        }
 //    }
 
+
     Box(
         contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 55.dp)
     ) {
-    }
-    Column(
-//        modifier = Modifier.alpha(if(deleting) 0.2f else 1.0f)
-    ) {
-        val content: @Composable () -> Unit = {
-            LazyColumn {
-//                items(tasks) { task ->
-//                    TaskRow(task, {}, {}, {})
-//                }
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
+            // App title
+            Text(
+                text = "Task Planner",
+                modifier = Modifier.padding(bottom = 8.dp),
+                fontSize = 35.sp,
+            )
+            // Heading for task list
+            Text(
+                text = "Your List of Tasks:",
+            )
+            val content: @Composable () -> Unit = {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .padding(bottom = 59.dp)
+                ) {
+                    // TODO: Implement listing TaskItems using this LazyColumn
+                    items(items = tasks.value) { task ->
+                        TaskRow(task, onDelete, onToggle, onSelectItem)
+
+                    }
+                }
             }
         }
-        if(LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            content()
-        } else {
-            LandscapeView(selectedTask = selectedTask?.title) {
-                content()
-            }
+    }
+
+        // Composable functions for the individual task listings on the task list
+        @Composable
+        fun TaskItem(task: Task) {
+            Text(
+                text = task.title,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
         }
     }
-        AddTaskButton(
-            onClick = onAddTask,
-            modifier = Modifier.padding(16.dp)
-        )
-}
