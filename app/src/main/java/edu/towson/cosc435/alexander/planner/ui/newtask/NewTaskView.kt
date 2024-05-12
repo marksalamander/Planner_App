@@ -2,9 +2,10 @@ package edu.towson.cosc435.alexander.planner.ui.newtask
 
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ExperimentalComposeApi
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +38,7 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import edu.towson.cosc435.alexander.planner.data.model.Task
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -50,6 +53,24 @@ fun NewTaskView(
     val (newTaskDescription, setNewTaskDescription) = remember { mutableStateOf("") }
     var newTaskDate by remember { mutableStateOf(LocalDate.now()) }
     var newTaskTime by remember { mutableStateOf(LocalTime.now()) }
+    var dateSet by remember { mutableStateOf(false) }
+    var timeSet by remember { mutableStateOf(false) }
+
+    val formattedDate by remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("MMM dd, yyyy")
+                .format(newTaskDate)
+        }
+    }
+
+    val formattedTime by remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("hh:mm")
+                .format(newTaskTime)
+        }
+    }
 
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
@@ -57,13 +78,7 @@ fun NewTaskView(
     MaterialDialog(
         dialogState = dateDialogState,
         buttons = {
-            positiveButton(text = "Ok") {
-                Toast.makeText(
-                    context,
-                    "Clicked ok",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            positiveButton(text = "Ok")
             negativeButton(text = "Cancel")
         }
     ) {
@@ -72,19 +87,14 @@ fun NewTaskView(
             title = "Pick a date",
         ) {
             newTaskDate = it
+            dateSet = true
         }
     }
 
     MaterialDialog(
         dialogState = timeDialogState,
         buttons = {
-            positiveButton(text = "Ok") {
-                Toast.makeText(
-                    context,
-                    "Clicked ok",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            positiveButton(text = "Ok")
             negativeButton(text = "Cancel")
         }
     ) {
@@ -93,6 +103,7 @@ fun NewTaskView(
             title = "Pick a date",
         ) {
             newTaskTime = it
+            timeSet = true
         }
     }
 
@@ -105,7 +116,7 @@ fun NewTaskView(
         // Task Title
         Text(
             text = "Task Title",
-            fontSize = 15.sp,
+            fontSize = 20.sp,
             modifier = Modifier.padding(5.dp),
         )
         OutlinedTextField(
@@ -119,7 +130,7 @@ fun NewTaskView(
         // Task Description
         Text(
             text = "Task Description",
-            fontSize = 15.sp,
+            fontSize = 20.sp,
             modifier = Modifier.padding(5.dp),
         )
         OutlinedTextField(
@@ -129,30 +140,55 @@ fun NewTaskView(
                 .padding(15.dp)
                 .fillMaxWidth()
         )
-
-        // Date of Task
         Text(
-            text = "Date of Task",
-            fontSize = 15.sp,
+            text = "Date and Time",
+            fontSize = 20.sp,
             modifier = Modifier.padding(5.dp),
         )
-        Button(onClick = {
-            dateDialogState.show()
-        }) {
-            Text("Date Picker")
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                                .padding(15.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(onClick = {
+                dateDialogState.show()
+            }) {
+                Text(
+                    text="Date Picker",
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(5.dp)
+                )
+            }
+
+            Button(onClick = {
+                timeDialogState.show()
+            }) {
+                Text(
+                    text="Time Picker",
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(5.dp)
+                )
+            }
         }
 
-        // Time of Task
-        Text(
-            text = "Time of Task",
-            fontSize = 15.sp,
-            modifier = Modifier.padding(5.dp),
-        )
-
-        Button(onClick = {
-            timeDialogState.show()
-        }) {
-            Text("Time Picker")
+        Column(
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (dateSet) {
+                Text(
+                    text = formattedDate,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(15.dp)
+                )
+            }
+            if (timeSet) {
+                Text(
+                    text = formattedTime,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(5.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(50.dp))

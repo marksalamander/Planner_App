@@ -1,6 +1,7 @@
 package edu.towson.cosc435.alexander.planner.ui.tasklist
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,17 +12,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.towson.cosc435.alexander.planner.data.model.Task
 import edu.towson.cosc435.alexander.planner.ui.TaskRow
+import kotlinx.coroutines.launch
 
 
 // Composable function for the list of tasks displayed on the task list page
+@SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalFoundationApi
 @Composable
 fun TaskListView(
@@ -74,7 +77,10 @@ fun TaskListView(
 //        }
 //    }
 
-    vm.getTasks()
+    val coroutineScope = rememberCoroutineScope()
+    coroutineScope.launch {
+        vm.getTasks()
+    }
     var tasks = remember { (vm.tasks) }
 
     Box(
