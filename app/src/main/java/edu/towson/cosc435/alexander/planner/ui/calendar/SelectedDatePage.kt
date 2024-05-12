@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.towson.cosc435.alexander.planner.data.model.Task
+import edu.towson.cosc435.alexander.planner.ui.TaskRow
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
@@ -45,7 +46,9 @@ import java.util.Locale
 fun SelectedDatePage(
     date: LocalDate,
     tasks: State<List<Task>>,
+    onDelete: (Task) -> Unit,
     onToggle: (Task) -> Unit,
+    onSelectItem: (Task) -> Unit,
 ) {
     val day = date.dayOfMonth
     val month = Month.of(date.monthValue).getDisplayName(TextStyle.FULL, Locale.getDefault())
@@ -74,51 +77,11 @@ fun SelectedDatePage(
                 .padding(bottom = 75.dp)
         ) {
             // TODO: Implement listing TaskItems using this LazyColumn
-            items(items = tasks.value) { item ->
-                // How each item in myArray is displayed in the LazyColumn
-                Card(
-                    shape = RoundedCornerShape(5.dp),
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)
-                        .fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(10.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .padding(5.dp, end = 30.dp)
-                            .combinedClickable (
-                                onLongClick = {
-                                    //onDelete(task)
-                                }
-                            ){
-                                //onSelectItem(task)
-                            }
-                            .pointerInput(Unit) {
-                                detectTapGestures(
-                                    onTap = {
-                                        onToggle(item)
-                                    }
-                                )
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+            items(items = tasks.value) { task ->
+                TaskRow(task, onDelete, onToggle, onSelectItem)
 
-                        Column(
-                            modifier = Modifier
-                                .padding(5.dp) // Add space around each item for visibility
-                                .padding(5.dp) // Add space around each item for visibility
-                                .fillMaxWidth()
-                        ) {
-                            Text(text = item.title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 15.dp))
-                            Text(
-                                text = item.description,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
-                        Checkbox(checked = item.isSelected, onCheckedChange = null, modifier = Modifier.padding(end=75.dp))
-                    }
                 }
             }
         }
     }
-}
+

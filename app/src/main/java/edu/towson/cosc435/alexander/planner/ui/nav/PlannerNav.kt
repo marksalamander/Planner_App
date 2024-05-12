@@ -50,10 +50,10 @@ fun PlannerNav(
         NavHost(navController, startDestination = Routes.Calendar.route) {
             composable(Routes.TaskListView.route) {
                 TaskListView(
-                    tasks = vm.tasks,
+                    vm,
                     onDelete = vm::deleteTask,
                     onToggle = vm::toggleSelected,
-                    onSelectItem = vm::selectTask
+                    onSelectItem = vm::selectTask,
                 )
             }
             composable(Routes.Calendar.route) {
@@ -73,7 +73,7 @@ fun PlannerNav(
                 vmc.loadSelectedDateTasks()
                 val selectedDate = vmc.selectedDate.observeAsState()
                 selectedDate.value?.let { date ->
-                    SelectedDatePage(date = date, tasks = vmc.dateTasks, onToggle = vmc::toggleSelected)
+                    SelectedDatePage(date = date, tasks = vmc.dateTasks, onDelete = vmc::deleteTask,onToggle = vmc::toggleSelected, onSelectItem = vmc::selectTask)
                 }
             }
         }
