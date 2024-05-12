@@ -18,20 +18,16 @@ import kotlinx.coroutines.launch
 class TaskListViewModel (app: Application) : AndroidViewModel(app) {
     private val _tasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val tasks: State<List<Task>> = _tasks
-
     private val _selected: MutableState<Task?>
     val selectedTask: State<Task?>
-
     private val _selectedTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val selectedTasks: State<List<Task>> = derivedStateOf {
         _selectedTasks.value.toList()
     }
-
     val anyTasksSelected: Boolean
         get() = _tasks.value.any { it.isSelected }
 
     private val _repository : TaskRepository = TaskRepository(getApplication())
-
     private val _deleting: MutableState<Boolean>
     val deleting: State<Boolean>
 

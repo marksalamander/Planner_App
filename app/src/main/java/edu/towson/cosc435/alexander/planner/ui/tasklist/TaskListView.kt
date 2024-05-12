@@ -28,7 +28,6 @@ fun TaskListView(
     onDelete: (Task) -> Unit,
     onToggle: (Task) -> Unit,
     onSelectItem: (Task) -> Unit,
-    onAddTask: (Task) -> Unit
 ) {
 //    val context = LocalContext.current
 //
@@ -95,7 +94,6 @@ fun TaskListView(
             Text(
                 text = "Your List of Tasks:",
             )
-            val content: @Composable () -> Unit = {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -108,16 +106,6 @@ fun TaskListView(
 
                     }
                 }
-            }
         }
     }
-
-        // Composable functions for the individual task listings on the task list
-        @Composable
-        fun TaskItem(task: Task) {
-            Text(
-                text = task.title,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-        }
-    }
+}

@@ -52,11 +52,8 @@ fun PlannerNav(
                     tasks = vm.tasks,
                     onDelete = vm::deleteTask,
                     onToggle = vm::toggleSelected,
-                    onSelectItem = vm::selectTask,
-                    onAddTask = { newTask: Task ->
-                        vm.addTask(newTask)
-                        navController.popBackStack() // navigate backwards!
-                    })
+                    onSelectItem = vm::selectTask
+                )
             }
             composable(Routes.Calendar.route) {
                 val vmc: CalendarViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)

@@ -2,6 +2,9 @@ package edu.towson.cosc435.alexander.planner.ui.calendar
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +29,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +39,7 @@ import java.time.Month
 import java.time.format.TextStyle
 import java.util.Locale
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SelectedDatePage(
@@ -78,7 +83,22 @@ fun SelectedDatePage(
                     elevation = CardDefaults.cardElevation(10.dp)
                 ) {
                     Row(
-                        modifier = Modifier.padding(end = 35.dp),
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .combinedClickable (
+                                onLongClick = {
+                                    //onDelete(task)
+                                }
+                            ){
+                                //onSelectItem(task)
+                            }
+                            .pointerInput(Unit) {
+                                detectTapGestures(
+                                    onTap = {
+                                        //onToggle(task)
+                                    }
+                                )
+                            },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
