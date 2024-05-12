@@ -11,8 +11,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.towson.cosc435.alexander.planner.data.database.Task
 import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

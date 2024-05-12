@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.getValue
@@ -27,10 +26,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import edu.towson.cosc435.alexander.planner.R
-import edu.towson.cosc435.alexander.planner.data.model.OldTask
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import edu.towson.cosc435.alexander.planner.ui.AddTaskButton
 import edu.towson.cosc435.alexander.planner.ui.LandscapeView
 import edu.towson.cosc435.alexander.planner.ui.TaskRow
@@ -42,11 +39,11 @@ import edu.towson.cosc435.alexander.planner.ui.TaskRow
 @Composable
 fun TaskListView (
 
-    tasks: List<OldTask>,
-    selectedTask: OldTask?,
-    onDelete: (OldTask) -> Unit,
+    tasks: List<Task>,
+    selectedTask: Task?,
+    onDelete: (Task) -> Unit,
     onFilter: (String) -> Unit,
-    onSelectTask: (OldTask) -> Unit,
+    onSelectTask: (Task) -> Unit,
     onAddTask: () -> Unit,
 
     ) {
@@ -102,9 +99,9 @@ fun TaskListView (
     ) {
         val content: @Composable () -> Unit = {
             LazyColumn {
-                items(tasks) { task ->
-                    TaskRow(task, {}, {}, {})
-                }
+//                items(tasks) { task ->
+//                    TaskRow(task, {}, {}, {})
+//                }
             }
         }
         if(LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {

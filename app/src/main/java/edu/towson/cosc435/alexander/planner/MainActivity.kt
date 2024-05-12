@@ -29,16 +29,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//@RequiresApi(Build.VERSION_CODES.O)
+//@OptIn(ExperimentalComposeApi::class)
 //@ExperimentalFoundationApi
 //@Preview(showBackground = true)
 //@Composable
 //fun DefaultPreview() {
 //    val tasks = (0..20).map { i ->
-//        Task(i,"Task $i", "Important thing to do $i", "", "", false)
+//        Task(i,"Task $i", "Important thing to do $i", LocalDate.now(), LocalTime.now(), false, false)
 //    }
 //    PlannerTheme {
 //        Surface(color = MaterialTheme.colorScheme.background) {
-//            TaskListView(tasks, tasks[0], {}, {}, {}, {}, {}, {}, false)
+//            TaskListView(tasks, tasks[0], {}, {}, {}, {})
 //        }
 //    }
 //}

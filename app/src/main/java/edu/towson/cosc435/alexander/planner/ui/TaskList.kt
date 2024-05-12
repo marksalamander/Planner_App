@@ -21,12 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.towson.cosc435.alexander.planner.data.model.OldTask
+import edu.towson.cosc435.alexander.planner.data.model.Task
 
 // Composable function for the list of tasks displayed on the task list page
 @ExperimentalFoundationApi
 @Composable
 fun TaskListView(
-    tasks: List<OldTask>
+    tasks: List<Task>
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -76,29 +77,30 @@ fun TaskListView(
                                     .padding(5.dp) // Add space around each item for visibility
                                     .fillMaxWidth()
                             ) {
-                                Text(text = task.title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(bottom = 15.dp))
+                                Text(
+                                    text = task.title,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier.padding(bottom = 15.dp)
+                                )
                                 Text(
                                     text = task.description,
                                     style = MaterialTheme.typography.bodyLarge
                                 )
                             }
-                            Checkbox(
-                                checked = task.isSelected,
-                                onCheckedChange = null,
-                                modifier = Modifier.padding(end=5.dp))
+                            Checkbox(checked = task.isSelected, onCheckedChange = null, modifier = Modifier.padding(end = 5.dp))
                         }
                     }
                 }
             }
         }
-    }
 
-    // Composable functions for the individual task listings on the task list
-    @Composable
-    fun TaskItem(task: OldTask) {
-        Text(
-            text = task.title,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
+        // Composable functions for the individual task listings on the task list
+        @Composable
+        fun TaskItem(task: OldTask) {
+            Text(
+                text = task.title,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
     }
 }

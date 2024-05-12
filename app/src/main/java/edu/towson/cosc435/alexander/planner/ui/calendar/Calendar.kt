@@ -39,7 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import edu.towson.cosc435.alexander.planner.data.database.Task
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -154,7 +154,7 @@ fun Calendar(
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun getDatesWithTasks(tasks: List<Task>): List<LocalDate> {
-    return tasks.map { it.date }
+    return tasks.map { it.taskDate }
 }
 
 

@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import edu.towson.cosc435.alexander.planner.data.database.Task
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle

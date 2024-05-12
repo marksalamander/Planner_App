@@ -7,5 +7,6 @@ data class OldTask (
     val taskDate: String,
     val taskTime: String,
     val isSelected: Boolean
+    //val isAlarmSet: Boolean
     ){
 }

@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.Upsert
 import edu.towson.cosc435.alexander.planner.data.database.Converters
-import edu.towson.cosc435.alexander.planner.data.database.Task
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import java.time.LocalDate
 
 @Dao
@@ -22,7 +22,7 @@ interface TaskDao {
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): List<Task>
 
-    @Query("SELECT * FROM tasks WHERE date = :date")
+    @Query("SELECT * FROM tasks WHERE taskDate = :date")
     fun getTasksForDate(date: LocalDate): List<Task>
 }
 

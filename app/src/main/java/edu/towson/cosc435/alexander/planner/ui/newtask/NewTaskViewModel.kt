@@ -8,8 +8,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import edu.towson.cosc435.alexander.planner.data.database.Task
 import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -95,11 +95,13 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
         }
 
         return Task(
+            id = "",
             title = titleValue,
             description = descriptionValue,
-            date = taskDateValue,
-            time = taskTimeValue,
-            alarmSet = false
+            taskDate = taskDateValue,
+            taskTime = taskTimeValue,
+            isSelected = false,
+            isAlarmSet = false
         )
     }
 

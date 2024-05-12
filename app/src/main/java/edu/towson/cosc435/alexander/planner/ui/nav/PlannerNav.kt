@@ -14,8 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import edu.towson.cosc435.alexander.planner.data.database.Task
-import edu.towson.cosc435.alexander.planner.data.model.OldTask
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import edu.towson.cosc435.alexander.planner.ui.TaskListView
 import edu.towson.cosc435.alexander.planner.ui.calendar.Calendar
 import edu.towson.cosc435.alexander.planner.ui.calendar.CalendarViewModel
@@ -23,6 +22,8 @@ import edu.towson.cosc435.alexander.planner.ui.calendar.SelectedDatePage
 import edu.towson.cosc435.alexander.planner.ui.newtask.NewTaskView
 import edu.towson.cosc435.alexander.planner.ui.tasklist.TaskListViewModel
 import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
+import java.time.LocalDate
+import java.time.LocalTime
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeApi::class)
@@ -31,19 +32,20 @@ import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
 fun PlannerNav(
     navController: NavHostController = rememberNavController()
 ) {
-    val tasks = remember { mutableListOf<OldTask>() }
-    tasks.add(OldTask("1", "Task 1", "This is going to test how much text can fit onto the card.", "22-4-2024", "Time", true))
-    tasks.add(OldTask("2", "Task 2", "Can you imagine waking up on a Sunday? Well you gotta, no ifs or buts.", "30-4-2024", "Time", true))
-    tasks.add(OldTask("3", "Task 3", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("4", "Task 4", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("5", "Task 5", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("6", "Task 6", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("7", "Task 7", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("8", "Task 8", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("9", "Task 9", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("10", "Task 10", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("11", "Task 11", "Summary 2", "30-4-2024", "Time", true))
-    tasks.add(OldTask("12", "Task 12", "Summary 2", "30-4-2024", "Time", true))
+    val tasks = remember { mutableListOf<Task>() }
+    tasks.add(Task("1", "Task 1", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("2", "Task 2", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("3", "Task 3", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("4", "Task 4", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("5", "Task 5", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("6", "Task 6", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("7", "Task 7", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("8", "Task 8", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("9", "Task 9", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("10", "Task 10", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("11", "Task 11", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task("12", "Task 12", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+
     PlannerTheme {
         NavHost(navController, startDestination = Routes.Calendar.route) {
             composable(Routes.TaskList.route) {

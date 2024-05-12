@@ -8,8 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.towson.cosc435.alexander.planner.data.database.Task
 import edu.towson.cosc435.alexander.planner.data.database.TaskRepository
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,44 +19,71 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
     private val _tasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val tasks: State<List<Task>> = _tasks
 
-    private val _selectedTasks: MutableState<Set<Task>> = mutableStateOf(emptySet())
+    private val _selected: MutableState<Task?>
+    val selectedTask: State<Task?>
+
+    private val _selectedTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val selectedTasks: State<List<Task>> = derivedStateOf {
         _selectedTasks.value.toList()
     }
 
-    private val repository : TaskRepository = TaskRepository(getApplication())
+    val anyTasksSelected: Boolean
+        get() = _tasks.value.any { it.isSelected }
+
+    private val _repository : TaskRepository = TaskRepository(getApplication())
+
+    private val _deleting: MutableState<Boolean>
+    val deleting: State<Boolean>
 
     val anyItemsSelected: Boolean
         get() = _selectedTasks.value.isNotEmpty()
 
     init {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-                _tasks.value = repository.getTasks()
+                _tasks.value = _repository.getTasks()
         }
+
+        _selected = mutableStateOf(null)
+        selectedTask = _selected
+
+        _deleting = mutableStateOf(false)
+        deleting = _deleting
+
     }
 
     fun addTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addTask(task)
+            _repository.addTask(task)
         }
     }
 
     fun deleteTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteTask(task)
+            _repository.deleteTask(task)
+            _tasks.value = _repository.getTasks()
         }
     }
 
     fun toggleSelected(task: Task) {
-        if (task in _selectedTasks.value) {
-            _selectedTasks.value -= task
-        } else {
-            _selectedTasks.value += task
+        viewModelScope.launch {
+            _repository.toggleSelected(task)
+            _tasks.value = _repository.getTasks()
         }
     }
 
-    fun clearSelected() {
-        _selectedTasks.value = emptySet()
+    fun deleteSelectedTasks() {
+        viewModelScope.launch {
+            _selectedTasks.value.forEach { task ->
+                _repository.deleteTask(task)
+            }
+
+            _tasks.value = _repository.getTasks()
+            _selectedTasks.value = _tasks.value.filter { it.isSelected }
+        }
+    }
+
+    fun toggleDeleteModal() {
+        _deleting.value = !_deleting.value
     }
 }
 val coroutineExceptionHandler = CoroutineExceptionHandler{_, throwable ->

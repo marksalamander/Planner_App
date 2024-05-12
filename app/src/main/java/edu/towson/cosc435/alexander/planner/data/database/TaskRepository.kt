@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import edu.towson.cosc435.alexander.planner.data.ITaskRepository
 import edu.towson.cosc435.alexander.planner.data.PlannerDatabase
+import edu.towson.cosc435.alexander.planner.data.model.Task
 import java.time.LocalDate
 
 class TaskRepository(app: Application) :ITaskRepository {
@@ -20,6 +21,8 @@ class TaskRepository(app: Application) :ITaskRepository {
 //    fun getTasksForDate(date: LocalDate): Flow<List<Task>> {
 //        return taskDao.getTasksForDate(date)
 //    }
+
+    private var _tasks = listOf<Task>()
     private val db: PlannerDatabase
 
     init {
@@ -43,5 +46,15 @@ class TaskRepository(app: Application) :ITaskRepository {
 
     override suspend fun getTasksForDate(date: LocalDate): List<Task> {
         return db.taskDao().getTasksForDate(date)
+    }
+
+    override suspend fun toggleSelected(task: Task) {
+        _tasks = _tasks.map { t ->
+            if(t.id == task.id) {
+                t.copy(isSelected = !t.isSelected)
+            } else {
+                t
+            }
+        }
     }
 }

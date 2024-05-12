@@ -8,22 +8,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import edu.towson.cosc435.alexander.planner.data.model.OldTask
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-
+import edu.towson.cosc435.alexander.planner.data.model.Task
 
 
 @ExperimentalFoundationApi
 @Composable
 fun TaskRow(
-    task: OldTask,
-    onDelete: (OldTask) -> Unit,
-    onToggle: (OldTask) -> Unit,
-    onSelectItem: (OldTask) -> Unit
+    task: Task,
+    onDelete: (Task) -> Unit,
+    onToggle: (Task) -> Unit,
+    onSelectItem: (Task) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -51,7 +50,7 @@ fun TaskRow(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("Date:", modifier = Modifier.weight(1.0f))
-                Text(task.taskDate, modifier = Modifier.weight(2.0f))
+                Text(task.taskDate.toString(), modifier = Modifier.weight(2.0f))
             }
             Row(
                 modifier = Modifier.padding(5.dp),
@@ -60,7 +59,6 @@ fun TaskRow(
                 Text("Time:", modifier = Modifier.weight(1.0f))
                 Text(task.taskTime.toString(), modifier = Modifier.weight(2.0f))
             }
-
         }
     }
 }
