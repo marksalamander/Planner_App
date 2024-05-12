@@ -83,5 +83,12 @@ fun SelectedDatePage(
                 }
             }
         }
+//            if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//                content()
+//            } else {
+//                LandscapeView(selectedTask = selectedItem?.title) {
+//                    content()
+//                }
+//            }
     }
 

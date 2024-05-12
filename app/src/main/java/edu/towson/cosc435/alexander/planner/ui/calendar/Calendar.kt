@@ -1,7 +1,9 @@
 
+
 package edu.towson.cosc435.alexander.planner.ui.calendar
 
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -47,20 +49,26 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendar(
     viewModel: CalendarViewModel,
     onDateSelected: (LocalDate) -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    coroutineScope.launch {
+        viewModel.getTasks()
+        viewModel.loadSelectedDateTasks()
+    }
     var tasks = remember { (viewModel.tasks) }
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var calendarGrid by remember(currentMonth) { mutableStateOf(generateCalendarGrid(currentMonth, viewModel)) }
 
-    val coroutineScope = rememberCoroutineScope()
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .padding(top=65.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

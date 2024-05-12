@@ -30,7 +30,7 @@ interface TaskDao {
     fun getTasksForDate(date: LocalDate): List<Task>
 }
 
-@Database(entities = [Task::class], version = 2, exportSchema = true)
+@Database(entities = [Task::class], version = 3, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class PlannerDatabase : RoomDatabase() {
     // Gives the database a reference to the DAO

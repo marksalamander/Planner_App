@@ -1,11 +1,13 @@
 package edu.towson.cosc435.alexander.planner.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.List
@@ -115,6 +117,7 @@ private fun BottomBar(
 @Composable
 
 private fun TopBar(viewModel: TaskListViewModel) {
+    val activity = (LocalContext.current as? Activity)
     TopAppBar(
         title = { Text("Task Planner")},
         colors = TopAppBarDefaults.topAppBarColors(
@@ -124,13 +127,12 @@ private fun TopBar(viewModel: TaskListViewModel) {
             actionIconContentColor = MaterialTheme.colorScheme.onSecondary
         ),
         actions = {
-            if (viewModel.anyTasksSelected) {
                 IconButton(onClick = {
-                    viewModel.toggleDeleteModal()
+                    activity?.finish()
                 }) {
-                    Icon(Icons.Default.Delete, contentDescription = "Delete")
+                    Icon(Icons.Default.Close, contentDescription = "Delete")
                 }
-            }
+
         }
     )
 }
