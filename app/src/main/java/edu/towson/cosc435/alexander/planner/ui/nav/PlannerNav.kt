@@ -33,18 +33,18 @@ fun PlannerNav(
     navController: NavHostController = rememberNavController()
 ) {
     val tasks = remember { mutableListOf<Task>() }
-    tasks.add(Task("1", "Task 1", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("2", "Task 2", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("3", "Task 3", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("4", "Task 4", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("5", "Task 5", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("6", "Task 6", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("7", "Task 7", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("8", "Task 8", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("9", "Task 9", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("10", "Task 10", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("11", "Task 11", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
-    tasks.add(Task("12", "Task 12", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(1, "Task 1", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(2, "Task 2", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(3, "Task 3", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(4, "Task 4", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(5, "Task 5", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(6, "Task 6", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(7, "Task 7", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(8, "Task 8", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(9, "Task 9", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(10, "Task 10", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(11, "Task 11", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
+    tasks.add(Task(12, "Task 12", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
 
     PlannerTheme {
         NavHost(navController, startDestination = Routes.Calendar.route) {

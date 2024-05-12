@@ -10,18 +10,6 @@ import java.time.LocalDate
 class TaskRepository(app: Application) :ITaskRepository {
 //    val allTasks: Flow<List<Task>> = taskDao.getAllTasks()
 //
-//    suspend fun upsert(task: Task) {
-//        taskDao.upsertTask(task)
-//    }
-//
-//    suspend fun delete(task: Task) {
-//        taskDao.deleteTask(task)
-//    }
-//
-//    fun getTasksForDate(date: LocalDate): Flow<List<Task>> {
-//        return taskDao.getTasksForDate(date)
-//    }
-
     private var _tasks = listOf<Task>()
     private val db: PlannerDatabase
 
@@ -30,6 +18,10 @@ class TaskRepository(app: Application) :ITaskRepository {
         db = Room.databaseBuilder(app, PlannerDatabase::class.java, "tasks.db")
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    override suspend fun updateTask(task: Task) {
+        db.taskDao().upsertTask(task)
     }
 
     override suspend fun getTasks(): List<Task> {

@@ -110,6 +110,7 @@ private fun BottomBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
 private fun TopBar(viewModel: TaskListViewModel) {
     TopAppBar(
         title = { Text("Task Planner")},

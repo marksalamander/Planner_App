@@ -95,7 +95,9 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
         }
 
         return Task(
-            id = "",
+
+            // TODO: Come back to this and put it a proper variable
+            id = 0,
             title = titleValue,
             description = descriptionValue,
             taskDate = taskDateValue,

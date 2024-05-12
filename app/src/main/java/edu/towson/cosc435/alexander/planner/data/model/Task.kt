@@ -8,8 +8,9 @@ import java.time.LocalTime
 @Entity(tableName = "tasks")
 data class Task (
 
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+
     val title: String,
     val description: String,
     val taskDate: LocalDate,

@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import edu.towson.cosc435.alexander.planner.data.model.OldTask
 import edu.towson.cosc435.alexander.planner.data.model.Task
 
 // Composable function for the list of tasks displayed on the task list page
@@ -32,6 +31,7 @@ fun TaskListView(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth()
+            .padding(top = 55.dp)
     ) {
         Column(
             modifier = Modifier
@@ -47,14 +47,13 @@ fun TaskListView(
             // Heading for task list
             Text(
                 text = "Your List of Tasks:",
-                modifier = Modifier.padding(bottom = 8.dp)
             )
             // Task list
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(5.dp)
-                    .padding(bottom = 60.dp)
+                    .padding(bottom = 59.dp)
             ) {
                 // TODO: Implement listing TaskItems using this LazyColumn
                 items(items = tasks) { task ->
@@ -96,7 +95,7 @@ fun TaskListView(
 
         // Composable functions for the individual task listings on the task list
         @Composable
-        fun TaskItem(task: OldTask) {
+        fun TaskItem(task: Task) {
             Text(
                 text = task.title,
                 modifier = Modifier.padding(vertical = 8.dp)

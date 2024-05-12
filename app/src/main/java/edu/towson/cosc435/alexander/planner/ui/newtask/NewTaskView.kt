@@ -98,7 +98,10 @@ fun NewTaskView(
     }
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(
+            top = 75.dp
+        )
     ) {
         // Task Title
         Text(

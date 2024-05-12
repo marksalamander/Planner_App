@@ -3,6 +3,7 @@ package edu.towson.cosc435.alexander.planner.data
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -18,6 +19,9 @@ interface TaskDao {
 
     @Delete
     suspend fun deleteTask(task: Task)
+
+    @Insert
+    suspend fun addTask(task: Task)
 
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): List<Task>
