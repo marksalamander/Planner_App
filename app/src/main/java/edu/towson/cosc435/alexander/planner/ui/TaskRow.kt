@@ -79,6 +79,17 @@ fun TaskRow(
                         fontSize = 28.sp,
                         color = MaterialTheme.colorScheme.secondary
                     )
+
+                }
+                Row(
+                    modifier = Modifier.padding(5.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(task.description,
+                        modifier = Modifier.weight(2.0f),
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 }
                 Row(
                     modifier = Modifier.padding(5.dp),
