@@ -27,7 +27,7 @@ class CalendarViewModel (app: Application) : AndroidViewModel(app) {
     val tasks: State<List<Task>> = _tasks
     private val _dateTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val dateTasks: State<List<Task>> = _dateTasks
-    private val repository : TaskRepository = TaskRepository(getApplication())
+    private val _repository : TaskRepository = TaskRepository(getApplication())
 
     init {
         _selectedDate.value = LocalDate.now()
@@ -39,14 +39,21 @@ class CalendarViewModel (app: Application) : AndroidViewModel(app) {
 
     fun getTasks() {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            _tasks.value = repository.getTasks()
+            _tasks.value = _repository.getTasks()
+        }
+    }
+
+    fun toggleSelected(task: Task) {
+        viewModelScope.launch {
+            _repository.toggleSelected(task)
+            _tasks.value = _repository.getTasks()
         }
     }
 
     fun loadSelectedDateTasks() {
         val selectedDateForLoading = selectedDate.value ?: LocalDate.now()
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            _dateTasks.value = repository.getTasksForDate(selectedDateForLoading)
+            _dateTasks.value = _repository.getTasksForDate(selectedDateForLoading)
         }
     }
 }

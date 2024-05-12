@@ -17,8 +17,8 @@ interface TaskDao {
     suspend fun deleteTask(task: Task)
 
     @Query("SELECT * FROM tasks")
-    fun getTasks(): List<Task>
+    suspend fun getTasks(): List<Task>
 
     @Query("SELECT * FROM tasks WHERE taskDate = :date")
-    fun getTasksForDate(date: LocalDate): List<Task>
+    suspend fun getTasksForDate(date: LocalDate): List<Task>
 }

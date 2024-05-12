@@ -2,6 +2,7 @@ package edu.towson.cosc435.alexander.planner.ui
 
 import android.annotation.SuppressLint
 import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -20,6 +21,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -34,6 +36,7 @@ import edu.towson.cosc435.alexander.planner.ui.tasklist.TaskListViewModel
 @Composable
 fun MainScreen() {
     val nav = rememberNavController()
+    val vm: TaskListViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
 
     Scaffold(
         topBar = {
@@ -43,7 +46,7 @@ fun MainScreen() {
             BottomBar(nav = nav)
         }
     ) {
-        PlannerNav(navController = nav)
+        PlannerNav(navController = nav, vm)
     }
 }
 

@@ -44,7 +44,8 @@ import java.util.Locale
 @Composable
 fun SelectedDatePage(
     date: LocalDate,
-    tasks: State<List<Task>>
+    tasks: State<List<Task>>,
+    onToggle: (Task) -> Unit,
 ) {
     val day = date.dayOfMonth
     val month = Month.of(date.monthValue).getDisplayName(TextStyle.FULL, Locale.getDefault())
@@ -84,7 +85,7 @@ fun SelectedDatePage(
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(5.dp, end = 30.dp)
                             .combinedClickable (
                                 onLongClick = {
                                     //onDelete(task)
@@ -95,7 +96,7 @@ fun SelectedDatePage(
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onTap = {
-                                        //onToggle(task)
+                                        onToggle(item)
                                     }
                                 )
                             },

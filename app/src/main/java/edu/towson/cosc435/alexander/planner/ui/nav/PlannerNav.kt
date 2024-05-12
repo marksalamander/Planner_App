@@ -28,9 +28,10 @@ import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlannerNav(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    vm: TaskListViewModel
 ) {
-    val vm: TaskListViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
+//    val vm: TaskListViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
 
 //    tasks.add(Task(1, "Task 1", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
 //    tasks.add(Task(2, "Task 2", "This is going to test how much text can fit onto the card.", LocalDate.now(), LocalTime.now(), false, false))
@@ -72,7 +73,7 @@ fun PlannerNav(
                 vmc.loadSelectedDateTasks()
                 val selectedDate = vmc.selectedDate.observeAsState()
                 selectedDate.value?.let { date ->
-                    SelectedDatePage(date = date, tasks = vmc.dateTasks)
+                    SelectedDatePage(date = date, tasks = vmc.dateTasks, onToggle = vmc::toggleSelected)
                 }
             }
         }
