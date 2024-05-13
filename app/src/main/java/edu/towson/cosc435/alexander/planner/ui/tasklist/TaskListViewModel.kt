@@ -70,7 +70,7 @@ class TaskListViewModel (app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun deleteSelectedTasks() {
+    fun deleteSelectedTask() {
         viewModelScope.launch {
             _selectedTasks.value.forEach { task ->
                 _repository.deleteTask(task)

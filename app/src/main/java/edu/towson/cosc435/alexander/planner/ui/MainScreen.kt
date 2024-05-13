@@ -5,6 +5,8 @@ import android.app.Activity
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
@@ -15,15 +17,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -39,6 +46,7 @@ import edu.towson.cosc435.alexander.planner.ui.tasklist.TaskListViewModel
 fun MainScreen() {
     val nav = rememberNavController()
     val vm: TaskListViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
+    //val sheetState = rememberModalBottomSheetState()
 
     Scaffold(
         topBar = {
@@ -127,12 +135,11 @@ private fun TopBar(viewModel: TaskListViewModel) {
             actionIconContentColor = MaterialTheme.colorScheme.onSecondary
         ),
         actions = {
-                IconButton(onClick = {
-                    activity?.finish()
-                }) {
-                    Icon(Icons.Default.Close, contentDescription = "Delete")
-                }
-
+            IconButton(onClick = {
+                activity?.finish()
+            }) {
+                Icon(Icons.Default.Close, contentDescription = "Delete")
+            }
         }
     )
 }
