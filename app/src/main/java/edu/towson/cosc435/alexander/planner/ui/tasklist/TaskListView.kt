@@ -101,7 +101,7 @@ fun TaskListView(
         ) {
             // App title
             Text(
-                text = "Task Planner",
+                text = "Task List",
                 modifier = Modifier.padding(bottom = 8.dp),
                 fontSize = 35.sp,
             )
