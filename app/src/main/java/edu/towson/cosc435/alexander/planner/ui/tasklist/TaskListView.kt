@@ -2,6 +2,8 @@ package edu.towson.cosc435.alexander.planner.ui.tasklist
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -25,12 +28,13 @@ import edu.towson.cosc435.alexander.planner.ui.TaskRow
 import kotlinx.coroutines.launch
 
 // Composable function for the list of tasks displayed on the task list page
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalFoundationApi
 fun TaskListView(
     vm: TaskListViewModel,
-    selectedTask: Task?,
+    selectedTask: State<Task?>,
     onDelete: (Task) -> Unit,
     onToggle: (Task) -> Unit,
     onSelectItem: (Task) -> Unit,
@@ -93,25 +97,20 @@ fun TaskListView(
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(top=20.dp)
                 .fillMaxSize()
         ) {
-            // App title
-            Text(
-                text = "Task List",
-                modifier = Modifier.padding(bottom = 8.dp),
-                fontSize = 35.sp,
-            )
             // Heading for task list
             Text(
-                text = "Your List of Tasks:",
+                text = "Your Tasks:",
+                modifier = Modifier.padding(start = 8.dp),
+                fontSize = 24.sp
             )
             val content: @Composable () -> Unit = {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(5.dp)
-                        .padding(bottom = 59.dp)
+                        .padding(bottom = 80.dp)
                 ) {
                     // TODO: Implement listing TaskItems using this LazyColumn
                     items(items = tasks.value) { task ->
@@ -124,7 +123,7 @@ fun TaskListView(
             if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 content()
             } else {
-                LandscapeView(selectedTask = selectedTask?.title) {
+                LandscapeView(selectedTask = selectedTask.value?.title) {
                     content()
                 }
             }

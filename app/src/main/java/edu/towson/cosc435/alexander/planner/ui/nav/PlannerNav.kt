@@ -6,8 +6,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ExperimentalComposeApi
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -28,16 +26,15 @@ import edu.towson.cosc435.alexander.planner.ui.theme.PlannerTheme
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PlannerNav(
-    navController: NavHostController = rememberNavController(),
-    vm: TaskListViewModel
+    navController: NavHostController = rememberNavController()
 ) {
     PlannerTheme {
         NavHost(navController, startDestination = Routes.Calendar.route) {
             composable(Routes.TaskListView.route) {
-                val selectedTask by vm.selectedTask
+                val vm: TaskListViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
                 TaskListView(
-                    vm,
-                    selectedTask,
+                    vm = vm,
+                    selectedTask = vm.selectedTask,
                     onDelete = vm::deleteTask,
                     onToggle = vm::toggleSelected,
                     onSelectItem = vm::selectTask
@@ -58,11 +55,12 @@ fun PlannerNav(
             }
             composable(Routes.SelectedDatePage.route) {
                 val vmc: CalendarViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
-                vmc.loadSelectedDateTasks()
-                val selectedDate = vmc.selectedDate.observeAsState()
-                selectedDate.value?.let { date ->
-                    SelectedDatePage(date = date, tasks = vmc.dateTasks, onDelete = vmc::deleteTask,onToggle = vmc::toggleSelected, onSelectItem = vmc::selectTask)
-                }
+                SelectedDatePage(
+                    tasks = vmc.dateTasks,
+                    onDelete = vmc::deleteTask,
+                    onToggle = vmc::toggleSelected,
+                    onSelectItem = vmc::selectTask
+                )
             }
         }
     }

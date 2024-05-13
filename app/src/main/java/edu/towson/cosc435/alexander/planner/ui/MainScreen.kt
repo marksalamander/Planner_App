@@ -3,7 +3,6 @@ package edu.towson.cosc435.alexander.planner.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
-import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -23,13 +22,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import edu.towson.cosc435.alexander.planner.ui.nav.PlannerNav
 import edu.towson.cosc435.alexander.planner.ui.nav.Routes
-import edu.towson.cosc435.alexander.planner.ui.tasklist.TaskListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -37,18 +34,15 @@ import edu.towson.cosc435.alexander.planner.ui.tasklist.TaskListViewModel
 @Composable
 fun MainScreen() {
     val nav = rememberNavController()
-    val vm: TaskListViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
-    //val sheetState = rememberModalBottomSheetState()
-
     Scaffold(
         topBar = {
-            TopBar(viewModel = viewModel())
+            TopBar()
         },
         bottomBar = {
             BottomBar(nav = nav)
         }
     ) {
-        PlannerNav(navController = nav, vm)
+        PlannerNav(navController = nav)
     }
 }
 
@@ -116,7 +110,7 @@ private fun BottomBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
-private fun TopBar(viewModel: TaskListViewModel) {
+private fun TopBar() {
     val activity = (LocalContext.current as? Activity)
     TopAppBar(
         title = { Text("Task Planner")},

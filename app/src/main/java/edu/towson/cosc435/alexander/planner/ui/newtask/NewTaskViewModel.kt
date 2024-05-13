@@ -98,8 +98,6 @@ class NewTaskViewModel (app: Application) : AndroidViewModel(app) {
         }
 
         return Task(
-
-            // TODO: Come back to this and put it a proper variable
             id = 0,
             title = titleValue,
             description = descriptionValue,

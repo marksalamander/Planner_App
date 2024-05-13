@@ -23,17 +23,15 @@ import java.time.LocalDate
 class CalendarViewModel (app: Application) : AndroidViewModel(app) {
     private val _selectedDate = MutableLiveData<LocalDate>()
     val selectedDate: LiveData<LocalDate> = _selectedDate
+
     private val _tasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val tasks: State<List<Task>> = _tasks
+
     private val _dateTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
     val dateTasks: State<List<Task>> = _dateTasks
-    private val _repository : TaskRepository = TaskRepository(getApplication())
-    private val _selected: MutableState<Task?>
 
-    init {
-        _selected = mutableStateOf(null)
-        _selectedDate.value = LocalDate.now()
-    }
+    private val _repository : TaskRepository = TaskRepository(getApplication())
+    private val _selected: MutableState<Task?> = mutableStateOf(null)
 
     fun setSelectedDate(date: LocalDate) {
         _selectedDate.value = date
