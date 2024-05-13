@@ -2,21 +2,22 @@ package edu.towson.cosc435.alexander.planner.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
+import androidx.room.Upsert
+import edu.towson.cosc435.alexander.planner.data.model.Task
+import java.time.LocalDate
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM tasks")
-    fun getAllTasks(): List<Task>
-
-    @Insert
-    fun insertTask(task: Task)
-
-    @Update
-    fun updateTask(task: Task)
+    @Upsert
+    suspend fun upsertTask(task: Task)
 
     @Delete
-    fun deleteTask(task: Task)
+    suspend fun deleteTask(task: Task)
+
+    @Query("SELECT * FROM tasks")
+    suspend fun getTasks(): List<Task>
+
+    @Query("SELECT * FROM tasks WHERE taskDate = :date")
+    suspend fun getTasksForDate(date: LocalDate): List<Task>
 }

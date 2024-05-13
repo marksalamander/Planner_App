@@ -1,13 +1,19 @@
 package edu.towson.cosc435.alexander.planner.data.model
 
-import android.widget.AdapterView.OnItemSelectedListener
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.time.LocalDate
+import java.time.LocalTime
 
+@Entity(tableName = "tasks")
 data class Task (
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val title: String,
     val description: String,
-    val taskDate: String,
-    val taskTime: String,
-    val isSelected: Boolean
+    val taskDate: LocalDate,
+    val taskTime: LocalTime,
+    val isSelected: Boolean,
+    val isAlarmSet: Boolean,
     ){
 }

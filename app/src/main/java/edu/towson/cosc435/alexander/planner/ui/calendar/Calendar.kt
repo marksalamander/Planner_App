@@ -1,7 +1,9 @@
 
+
 package edu.towson.cosc435.alexander.planner.ui.calendar
 
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -39,7 +41,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import edu.towson.cosc435.alexander.planner.data.model.CalendarDate
 import edu.towson.cosc435.alexander.planner.data.model.Task
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -48,18 +49,26 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendar(
-    tasks: List<Task>,
-    onDateSelected: (CalendarDate, List<Task>) -> Unit
+    viewModel: CalendarViewModel,
+    onDateSelected: (LocalDate) -> Unit
 ) {
-    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-    var calendarGrid by remember(currentMonth) { mutableStateOf(generateCalendarGrid(currentMonth)) }
     val coroutineScope = rememberCoroutineScope()
+    coroutineScope.launch {
+        viewModel.getTasks()
+        viewModel.loadSelectedDateTasks()
+    }
+    var tasks = remember { (viewModel.tasks) }
+    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+    var calendarGrid by remember(currentMonth) { mutableStateOf(generateCalendarGrid(currentMonth, viewModel)) }
+
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .padding(top=65.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -74,7 +83,7 @@ fun Calendar(
                     // Performs update asynchronously in a separate coroutine, allowing smoother transition when changing months
                     coroutineScope.launch {
                         currentMonth = currentMonth.minusMonths(1)
-                        calendarGrid = generateCalendarGrid(currentMonth)
+                        calendarGrid = generateCalendarGrid(currentMonth, viewModel)
                     }
                 }
             ) {
@@ -98,7 +107,7 @@ fun Calendar(
                     // Performs update asynchronously in a separate coroutine, allowing smoother transition when changing months
                     coroutineScope.launch {
                         currentMonth = currentMonth.plusMonths(1)
-                        calendarGrid = generateCalendarGrid(currentMonth)
+                        calendarGrid = generateCalendarGrid(currentMonth, viewModel)
                     }
                 }
             ) {
@@ -129,7 +138,8 @@ fun Calendar(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        val datesWithTasks = getDatesWithTasks(tasks)
+
+        val datesWithTasks = getDatesWithTasks(tasks.value)
 
         // Generates dates for each cell within the calendar grid
         LazyColumn {
@@ -139,10 +149,9 @@ fun Calendar(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     for (date in row) {
-                        DayCell(date = date, tasks = datesWithTasks) {selectedDate ->
-                            onDateClick(date = selectedDate, tasks = tasks) {date, currentTasks ->
-                                onDateSelected(date, currentTasks)
-                            }
+                        DayCell(date = date, tasks = datesWithTasks) { selectedDate ->
+                            viewModel.setSelectedDate(selectedDate)
+                            onDateSelected(date)
                         }
                     }
                 }
@@ -151,56 +160,43 @@ fun Calendar(
     }
 }
 
-// Parses Task.taskDate string, converting it to type CalendarDate
-fun parseDateStringToDate(dateString: String): CalendarDate {
-    val dateParts = dateString.split("-") // Assuming the date string is in "day-month-year" format
-    val day = dateParts[0].toInt()
-    val month = dateParts[1].toInt()
-    val year = dateParts[2].toInt()
-    return CalendarDate(day, month, year)
+@RequiresApi(Build.VERSION_CODES.O)
+fun getDatesWithTasks(tasks: List<Task>): List<LocalDate> {
+    return tasks.map { it.taskDate }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun getDatesWithTasks(tasks: List<Task>): List<CalendarDate> {
-    return tasks.map { parseDateStringToDate(it.taskDate) }
-}
 
 // Generates the calendar grid
 @RequiresApi(Build.VERSION_CODES.O)
-fun generateCalendarGrid(month: YearMonth): List<List<CalendarDate>> {
-    val daysInMonth = month.lengthOfMonth()
+fun generateCalendarGrid(month: YearMonth, vm: CalendarViewModel): List<List<LocalDate>> {
+    vm.getTasks()
     val firstDayOfMonth = month.atDay(1).dayOfWeek // Gets the first day of the month
     val startingDayOffset = (firstDayOfMonth.value - DayOfWeek.SUNDAY.value + 7) % 7
 
-    val calendarGrid = mutableListOf<MutableList<CalendarDate>>()
-    var currentRow = mutableListOf<CalendarDate>()
+    val calendarGrid = mutableListOf<MutableList<LocalDate>>()
+    var currentRow = mutableListOf<LocalDate>()
 
     // Adds empty cells for days before the start of the month
     for (i in 1..startingDayOffset) {
-        currentRow.add(CalendarDate(day = -1, month = -1, year = -1))
+        currentRow.add(LocalDate.MIN)
     }
 
-    var currentDay = 1
+    var currentDate = month.atDay(1)
+    val daysInMonth = month.lengthOfMonth()
+
     // Adds days of the month to the grid
-    while (currentDay <= daysInMonth) {
+    while (currentDate.month == month.month) {
         if (currentRow.size == 7) {
             calendarGrid.add(currentRow)
             currentRow = mutableListOf()
-        } else {
-            currentRow.add(
-                CalendarDate(
-                    day = currentDay,
-                    month = month.monthValue,
-                    year = month.year
-                )
-            )
-            currentDay++
         }
+        currentRow.add(currentDate)
+        currentDate = currentDate.plusDays(1)
     }
 
     // Adds remaining empty cells to complete the last row
     while (currentRow.size < 7) {
-        currentRow.add(CalendarDate(day = -1, month = -1, year = -1))
+        currentRow.add(LocalDate.MIN)
     }
 
     // Adds the last row to the grid
@@ -209,28 +205,13 @@ fun generateCalendarGrid(month: YearMonth): List<List<CalendarDate>> {
     return calendarGrid
 }
 
-// Returns the date that was clicked, as well as tasks that occur on the date
-fun onDateClick (
-    date: CalendarDate,
-    tasks: List<Task>,
-    dateSelected: (CalendarDate, List<Task>) -> Unit
-) {
-    val currentTasks = mutableListOf<Task>()
-    for(task in tasks) {
-        if(parseDateStringToDate(task.taskDate) == date) {
-            currentTasks.add(task)
-        }
-    }
-    dateSelected(date, currentTasks)
-}
-
 // Draws calender cell for each day within the month
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DayCell(
-    date: CalendarDate,
-    tasks: List<CalendarDate>,
-    onItemClick: (CalendarDate) -> Unit
+    date: LocalDate,
+    tasks: List<LocalDate>,
+    onItemClick: (LocalDate) -> Unit
 ) {
     val isToday = isToday(date)
     val hasTasks = date in tasks
@@ -243,8 +224,8 @@ fun DayCell(
             .clip(CircleShape)
             .background(
                 color = when {
-                    isToday -> theme.primary.copy(alpha = 0.45f) // Change color for selected date
-                    hasTasks -> Color.Red.copy(alpha = 0.45f) // Change color for date with tasks
+                    isToday -> theme.primary.copy(alpha = 0.45f)
+                    hasTasks -> Color.Red.copy(alpha = 0.45f) // Change color for selected date
                     else -> Color.Transparent
                 }
             )
@@ -253,16 +234,15 @@ fun DayCell(
     ) {
         Text(
             // Displays only valid dates, else displays empty cells to fill row
-            text = if (date.day != -1) date.day.toString() else "",
+            text = if (date != LocalDate.MIN) date.dayOfMonth.toString() else "",
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(8.dp)
         )
     }
 }
 
-// Function that determines the current day, returns boolean
 @RequiresApi(Build.VERSION_CODES.O)
-fun isToday(date: CalendarDate): Boolean {
+fun isToday(date: LocalDate): Boolean {
     val today = LocalDate.now()
-    return date.year == today.year && date.month == today.monthValue && date.day == today.dayOfMonth
+    return date.year == today.year && date.monthValue == today.monthValue && date.dayOfMonth == today.dayOfMonth
 }
