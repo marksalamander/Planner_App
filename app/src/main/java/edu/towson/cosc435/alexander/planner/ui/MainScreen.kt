@@ -28,7 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import edu.towson.cosc435.alexander.planner.ui.nav.PlannerNav
 import edu.towson.cosc435.alexander.planner.ui.nav.Routes
 
-@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

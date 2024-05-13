@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class TaskRepository(app: Application) :ITaskRepository {
-//    val allTasks: Flow<List<Task>> = taskDao.getAllTasks()
 
     private var _tasks = listOf<Task>()
     // create the database

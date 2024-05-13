@@ -42,7 +42,7 @@ fun PlannerNav(
             }
             composable(Routes.Calendar.route) {
                 val vmc: CalendarViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
-                Calendar(viewModel = vmc) { _ ->
+                Calendar(viewModel = vmc) { _ -> // Navigates to SelectedDatePage when a date is clicked ~Mark
                     navController.navigate(Routes.SelectedDatePage.route)
                 }
             }
@@ -56,6 +56,7 @@ fun PlannerNav(
             composable(Routes.SelectedDatePage.route) {
                 val vmc: CalendarViewModel = viewModel(viewModelStoreOwner = LocalContext.current as ComponentActivity)
                 SelectedDatePage(
+                    date = vmc.selectedDate,
                     tasks = vmc.dateTasks,
                     onDelete = vmc::deleteTask,
                     onToggle = vmc::toggleSelected,

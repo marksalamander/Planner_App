@@ -7,7 +7,7 @@ import java.time.LocalTime
 
 @Entity(tableName = "tasks")
 data class Task (
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true) // Autogenerates an ID ~MARK
     val id: Int = 0,
     val title: String,
     val description: String,

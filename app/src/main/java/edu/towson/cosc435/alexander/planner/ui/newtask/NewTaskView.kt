@@ -178,19 +178,19 @@ fun NewTaskView(
                 Text(
                     text = formattedDate,
                     fontSize = 20.sp,
-                    modifier = Modifier.padding(15.dp)
+                    modifier = Modifier.padding(10.dp)
                 )
             }
             if (timeSet) {
                 Text(
                     text = formattedTime,
                     fontSize = 20.sp,
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(top=5.dp)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // Add Task Button
         FloatingActionButton(
