@@ -147,7 +147,7 @@ fun NewTaskView(
         )
         Row(
             modifier = Modifier.fillMaxWidth()
-                                .padding(15.dp),
+                .padding(15.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(onClick = {

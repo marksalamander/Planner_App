@@ -2,6 +2,7 @@ package edu.towson.cosc435.alexander.planner.ui.tasklist
 
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,13 +13,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.towson.cosc435.alexander.planner.data.model.Task
+import edu.towson.cosc435.alexander.planner.ui.LandscapeView
 import edu.towson.cosc435.alexander.planner.ui.TaskRow
 import kotlinx.coroutines.launch
 
@@ -29,6 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TaskListView(
     vm: TaskListViewModel,
+    selectedTask: Task?,
     onDelete: (Task) -> Unit,
     onToggle: (Task) -> Unit,
     onSelectItem: (Task) -> Unit,
@@ -76,11 +81,11 @@ fun TaskListView(
 //            remindAboutTask(task.id, task.title)
 //        }
 //    }
-
     val coroutineScope = rememberCoroutineScope()
     coroutineScope.launch {
         vm.getTasks()
     }
+    vm.getTasks()
     var tasks = remember { (vm.tasks) }
 
     Box(
@@ -104,6 +109,7 @@ fun TaskListView(
             Text(
                 text = "Your List of Tasks:",
             )
+            val content: @Composable () -> Unit = {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -116,6 +122,15 @@ fun TaskListView(
 
                     }
                 }
+            }
+
+            if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                content()
+            } else {
+                LandscapeView(selectedTask = selectedTask?.title) {
+                    content()
+                }
+            }
         }
     }
 }

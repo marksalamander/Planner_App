@@ -43,13 +43,11 @@ class TaskRepository(app: Application) :ITaskRepository {
     }
 
     override suspend fun toggleSelected(task: Task) {
-        withContext(Dispatchers.IO) {
-            _tasks = _tasks.map { t ->
-                if (t.id == task.id) {
-                    t.copy(isSelected = !t.isSelected)
-                } else {
-                    t
-                }
+        _tasks = _tasks.map { t ->
+            if (t.id == task.id) {
+                t.copy(isSelected = !t.isSelected)
+            } else {
+                t
             }
         }
     }
